@@ -11,6 +11,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.hateoas.MediaTypes;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
@@ -26,6 +27,7 @@ public class testTest {
 	
 
 	@Test
+	@WithMockUser //이게있으면 인증  기능 무시하고 테스트 진행인듯
 	public void hahaha() throws Exception {
 		MvcResult result = mockMvc.perform(
 				get("/").contentType(MediaType.APPLICATION_JSON_UTF8)
