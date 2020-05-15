@@ -1,26 +1,21 @@
 package portfolio.restbootjpa.Resource;
 
-import org.springframework.hateoas.Link;
-import org.springframework.hateoas.Links;
 import org.springframework.hateoas.RepresentationModel;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonUnwrapped;
-
-import portfolio.restbootjpa.Entity.Member;
+import portfolio.restbootjpa.Entity.MerBs;
 
 
 public class MemberResource  extends  RepresentationModel<MemberResource> {
 
 	
-	private Member member;
+	private MerBs member;
 	
-	public MemberResource(Member member) {
+	public MemberResource(MerBs member) {
 	
 		this.member = member;
 	}	
 	
-	public Member getContent() {
+	public MerBs getContent() {
 		return member;
 	}
 	

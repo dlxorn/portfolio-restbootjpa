@@ -11,12 +11,15 @@ import javax.transaction.Transactional;
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 
-import portfolio.restbootjpa.Entity.Member;
+import portfolio.restbootjpa.Entity.MerBs;
 import portfolio.restbootjpa.Resource.MemberResource;
 
 @RestController
@@ -26,12 +29,16 @@ public class TestController {
 	EntityManager em;
 	
 	
+
+	
 	@GetMapping("/")
 	@Transactional
 	public ResponseEntity haha() {
 		
-		Member a = new Member("zzzzzzzz");
+		MerBs a = new MerBs();
 			
+		a.setMerNo(222L);
+		
 		em.persist(a);
 		
 		em.flush();
@@ -39,21 +46,21 @@ public class TestController {
 		
 	
 		
-		Member b =em.find(Member.class, a.getId());
+		MerBs b =em.find(MerBs.class, a.getMerNo());
 		
 		System.out.println(b);
 
 		
 		//자체 url 생성한다.
 		//헤더스에 Headers 에 Location을 등록한다
-         URI uri = WebMvcLinkBuilder.linkTo(TestController.class).slash(b.getId()).toUri();
+         URI uri = WebMvcLinkBuilder.linkTo(TestController.class).slash(a.getMerNo()).toUri();
   
          MemberResource resource = new MemberResource(b);
          
          //linkTo(methodOn(EmployeeController.class).all()).withRel("employees")))
               
          
-         resource.add( linkTo(TestController.class).slash(b.getId()).withSelfRel());
+         resource.add( linkTo(TestController.class).slash(a.getMerNo()).withSelfRel());
          resource.add( linkTo(TestController.class).withRel("hoho"));
                   
          //링크는 확인했고
