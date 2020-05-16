@@ -10,15 +10,18 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import portfolio.restbootjpa.constraint.MerClientType;
 
 @Entity
+@AllArgsConstructor
 @NoArgsConstructor
 @Getter
-@Setter
+@Builder
 public class MerClientBs extends BaseEntity {
 
 		
@@ -30,10 +33,9 @@ public class MerClientBs extends BaseEntity {
 	private MerClientType type;
 	
 	private String clientNm;
-	
-	
+		
 	@OneToMany(mappedBy = "merJngcBs")
-	private List<MerReprRel> merRsvrRel = new ArrayList<MerReprRel>();
+	private List<MerReprRel> merReprRelList = new ArrayList<MerReprRel>();
 
 //oneTomany로 만들어야할듯
 //	@OneToOne(fetch=FetchType.LAZY)	

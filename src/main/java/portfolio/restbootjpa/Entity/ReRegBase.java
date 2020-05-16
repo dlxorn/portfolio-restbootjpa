@@ -5,22 +5,26 @@ import java.util.List;
 
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @Entity
+@AllArgsConstructor
 @NoArgsConstructor
 @Getter
-@Setter
+@Builder
 public class ReRegBase  extends BaseEntity{
 
 	@Id
+	@GeneratedValue
 	private Long id;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
@@ -34,8 +38,6 @@ public class ReRegBase  extends BaseEntity{
 	
 	@OneToMany(mappedBy = "reportBase")
 	private List<ReRegDt> reportDtList = new ArrayList<ReRegDt>();
-			
-	
-	
+				
 	
 }

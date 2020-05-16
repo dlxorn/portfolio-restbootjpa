@@ -1,5 +1,6 @@
 package portfolio.restbootjpa.Entity;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,15 +12,20 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
+@AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
+@Builder
 public class MerBs extends BaseEntity{
 
 	
@@ -38,7 +44,7 @@ public class MerBs extends BaseEntity{
 	
 	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name ="client_bs")	
-	private MerClientBs jngcNo;
+	private MerClientBs merClientBs;
 	
 	
 	@ManyToOne(fetch=FetchType.LAZY)	
@@ -49,12 +55,34 @@ public class MerBs extends BaseEntity{
 	private List<MerReprRel> merRsvrRel = new ArrayList<MerReprRel>();
 	
 	
-//oneTomany로 만들어야할듯	
-//	@OneToOne(fetch=FetchType.LAZY)	
-//	@JoinColumn(name = "contact_id") 
-//	private ContactItem contactItem;
+	@OneToOne(fetch=FetchType.LAZY)	
+	@JoinColumn(name = "contact_id_phone") 
+	private Phone phone;
+
+	@OneToOne(fetch=FetchType.LAZY)	
+	@JoinColumn(name = "contact_id_email") 
+	private Email email;
+	
+
+	public static MerBsBuilder getMappingBuilder(MerBs merBs) {
+		return MerBs.builder()
+				.merNo(merBs.getMerNo()) 
+				.merNm(merBs.getMerNm())
+				.regDtm(merBs.getRegDtm())
+				.cnlDtm(merBs.getCnlDtm())
+				.merClientBs(merBs.getMerClientBs())
+				.rsvrClientBs(merBs.getRsvrClientBs())
+				.merRsvrRel(merBs.getMerRsvrRel())
+				.phone(merBs.getPhone())
+				.email(merBs.getEmail())				
+				
+				;		
+	}
+
+
+
+
+
 	
 		
-		
-	
 }

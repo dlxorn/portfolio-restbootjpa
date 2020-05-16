@@ -37,7 +37,7 @@ public class testTest {
 		.andReturn();
 		
 		
-	 assertTrue(result.getResponse().getContentAsString().equals("haha"));
+//	 assertTrue(result.getResponse().getContentAsString().equals("haha"));
 		
 	//     .andExpect(content().string(containsString("This content is only shown to users.")));
 		

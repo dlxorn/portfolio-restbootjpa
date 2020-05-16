@@ -12,11 +12,8 @@ import org.springframework.data.annotation.LastModifiedBy;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import lombok.Getter;
-
 @EntityListeners(AuditingEntityListener.class)
 @MappedSuperclass
-@Getter
 public class BaseEntity {
 	
 	@CreatedDate
@@ -33,7 +30,6 @@ public class BaseEntity {
 	
 	@LastModifiedBy
 	private String updateMember;
-	
-	
+		
 	
 }

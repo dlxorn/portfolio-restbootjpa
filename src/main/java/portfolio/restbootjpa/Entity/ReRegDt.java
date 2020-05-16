@@ -9,15 +9,17 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 import portfolio.restbootjpa.constraint.ReRegType;
 
 @Entity
+@AllArgsConstructor
 @NoArgsConstructor
 @Getter
-@Setter
+@Builder
 public class ReRegDt  extends BaseEntity{
 
 	@Id

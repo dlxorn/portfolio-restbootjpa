@@ -1,26 +1,15 @@
 package portfolio.restbootjpa.controller;
 
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
-
-import java.net.URI;
-
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
 
-import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContext;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
-
 
 import portfolio.restbootjpa.Entity.MerBs;
-import portfolio.restbootjpa.Resource.MemberResource;
+
 
 @RestController
 public class TestController {
@@ -28,52 +17,60 @@ public class TestController {
 	@PersistenceContext
 	EntityManager em;
 	
-	
+
 
 	
 	@GetMapping("/")
 	@Transactional
 	public ResponseEntity haha() {
 		
-		MerBs a = new MerBs();
-			
-		a.setMerNo(222L);
+	
 		
+		MerBs a = new MerBs();
+	
+					
 		em.persist(a);
+		
+			
 		
 		em.flush();
 		em.clear();
 		
-	
 		
-		MerBs b =em.find(MerBs.class, a.getMerNo());
 		
-		System.out.println(b);
-
+		return null;
 		
-		//자체 url 생성한다.
-		//헤더스에 Headers 에 Location을 등록한다
-         URI uri = WebMvcLinkBuilder.linkTo(TestController.class).slash(a.getMerNo()).toUri();
-  
-         MemberResource resource = new MemberResource(b);
-         
-         //linkTo(methodOn(EmployeeController.class).all()).withRel("employees")))
-              
-         
-         resource.add( linkTo(TestController.class).slash(a.getMerNo()).withSelfRel());
-         resource.add( linkTo(TestController.class).withRel("hoho"));
-                  
-         //링크는 확인했고
-         
-         
- 		 // eventResource.add(selfLinkBuilder.withRel("update-event"));
- 		
- 		//링크를 뺄 수 있는 방법 한가지만 파악하자
-        //
-         
-    //     resource.add( linkTo(TestController.class).slash(b.getId()).withSelfRel());
-                   		
- 		return new ResponseEntity(HttpStatus.OK).created(uri).body(resource); 
+//		
+//	
+//		
+//		MerBs b =em.find(MerBs.class, a.getMerNo());
+//		
+//		System.out.println(b);
+//
+//		
+//		//자체 url 생성한다.
+//		//헤더스에 Headers 에 Location을 등록한다
+//         URI uri = WebMvcLinkBuilder.linkTo(TestController.class).slash(a.getMerNo()).toUri();
+//  
+//         MemberResource resource = new MemberResource(b);
+//         
+//         //linkTo(methodOn(EmployeeController.class).all()).withRel("employees")))
+//              
+//         
+//         resource.add( linkTo(TestController.class).slash(a.getMerNo()).withSelfRel());
+//         resource.add( linkTo(TestController.class).withRel("hoho"));
+//                  
+//         //링크는 확인했고
+//         
+//         
+// 		 // eventResource.add(selfLinkBuilder.withRel("update-event"));
+// 		
+// 		//링크를 뺄 수 있는 방법 한가지만 파악하자
+//        //
+//         
+//    //     resource.add( linkTo(TestController.class).slash(b.getId()).withSelfRel());
+//                   		
+// 		return new ResponseEntity(HttpStatus.OK).created(uri).body(resource); 
  		
  		
      
