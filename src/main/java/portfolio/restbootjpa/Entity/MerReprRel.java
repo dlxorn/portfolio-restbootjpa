@@ -2,6 +2,8 @@ package portfolio.restbootjpa.Entity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -19,6 +21,7 @@ import lombok.NoArgsConstructor;
 public class MerReprRel  extends BaseEntity{
 	
 	@Id
+	@GeneratedValue
 	private Long id;
 
 
@@ -28,8 +31,8 @@ public class MerReprRel  extends BaseEntity{
 		
 	
 	@ManyToOne
-	@JoinColumn(name="rsvr_jngc_no")
-	private MerClientBs merJngcBs;
+	@JoinColumn(name="rsvr_no")
+	private MerClientBs merClientBs;
 			
 	@Column(length =14)
 	private String regDtm;
