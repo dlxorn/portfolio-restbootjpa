@@ -20,15 +20,13 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter{
 
 	@Override
 	public void configure(HttpSecurity http) throws Exception {
-		http.anonymous()
-				.and()
-				.authorizeRequests()
-				.mvcMatchers(HttpMethod.GET,"/api/**")	
+		http	.authorizeRequests()
+				.mvcMatchers(HttpMethod.GET,"/**")	
 				.permitAll() //이건 모든 상대들에게 허용
 				.anyRequest()
 				.authenticated()
 				.and()
-			.exceptionHandling()  //에러 핸들러인데 에러핸들런 중에 에러가 나며면
+		    	.exceptionHandling()  //에러 핸들러인데 에러핸들런 중에 에러가 나며면
 			  .accessDeniedHandler(new OAuth2AccessDeniedHandler()); //OAuth2AccessDeniedHandler를 사용하여 핸들링을 해준다.
 			  
 		

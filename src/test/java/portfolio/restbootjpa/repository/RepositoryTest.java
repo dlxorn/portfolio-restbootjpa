@@ -94,8 +94,7 @@ public class RepositoryTest {
 									 .merClientBs(merClientBs) 
 				                     .build();		
 				
-		merBsRepository.save(merBs);	
-		
+		merBsRepository.save(merBs);		
 		
 		em.flush();				
 		em.clear();	

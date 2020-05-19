@@ -29,6 +29,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import portfolio.restbootjpa.Entity.MerBs;
 import portfolio.restbootjpa.Resource.MerBsResource;
+import portfolio.restbootjpa.accounts.Account;
+import portfolio.restbootjpa.accounts.CurrentUser;
 import portfolio.restbootjpa.dto.MerBsDto;
 import portfolio.restbootjpa.service.MerService;
 
@@ -42,18 +44,19 @@ public class MerBsController {
 	ModelMapper modelMapper;
 	
 	@GetMapping   
-	public ResponseEntity getMerBsInfoList(Pageable pageable,   PagedResourcesAssembler<MerBs> assembler) {	    
+	public ResponseEntity getMerBsInfoList(Pageable pageable,   PagedResourcesAssembler<MerBs> assembler ,  @CurrentUser Account currentUser  ) {	    
 		
 		Page<MerBs> page = merService.findAll(pageable);
-		
-		 PagedModel<RepresentationModel<?>> pagedResources = assembler.toModel(page, e ->  new MerBsResource(mappingToDto(e)));
+				
+	    boolean isLogin =	currentUser != null ;	
+		PagedModel<RepresentationModel<?>> pagedResources = assembler.toModel(page, e ->  new MerBsResource(mappingToDto(e), isLogin));
 		 	 			
 		return ResponseEntity.ok(pagedResources);
 	}	
 	
 		
 	@GetMapping("/{merNo}")   
-	public ResponseEntity getMerBsInfo(@PathVariable Long merNo) throws Exception {		
+	public ResponseEntity getMerBsInfo(@PathVariable Long merNo ,  @CurrentUser Account currentUser  ) throws Exception {		
 		
 		Optional<MerBs> optMerBs = merService.findMerBsById(merNo);
 		if(optMerBs.isEmpty()) {			
@@ -63,7 +66,8 @@ public class MerBsController {
 				
 		MerBsDto merBsDto = mappingToDto(merBs);		
 		
-		MerBsResource merBsResource = new MerBsResource(merBsDto);												
+	    boolean islogin =	currentUser != null ;	
+		MerBsResource merBsResource = new MerBsResource(merBsDto,islogin);												
 				
 		return ResponseEntity.ok(merBsResource);
 
@@ -72,15 +76,19 @@ public class MerBsController {
 	
 	
 	@PostMapping
-	public ResponseEntity createMerInfo(@RequestBody @Valid MerBsDto merBsDto, Errors errors) {		
+	public ResponseEntity createMerInfo(@RequestBody @Valid MerBsDto merBsDto, Errors errors, @CurrentUser Account currentUser  ) {		
 
+		
+		
+		
 		if (errors.hasErrors()) {
 			return ResponseEntity.badRequest().body(errors);
 		}
 								
 		MerBs merBs = merService.saveFromMerBsDto(merBsDto);	
-				
-		MerBsResource merBsResource = new MerBsResource(merBsDto);
+			
+		
+		MerBsResource merBsResource = new MerBsResource(merBsDto, true);
 		WebMvcLinkBuilder selfLinkBuilder = linkTo(MerBsController.class).slash(merBs.getMerNo());
 		URI createdUri  = selfLinkBuilder.toUri() ;		
 
@@ -90,7 +98,7 @@ public class MerBsController {
 	
 	
 	@PutMapping
-	public ResponseEntity updateMerInfo(@RequestBody @Valid MerBsDto merBsDto, Errors errors) {
+	public ResponseEntity updateMerInfo(@RequestBody @Valid MerBsDto merBsDto, Errors errors,  @CurrentUser Account currentUser  ) {
 		
 
 		if (errors.hasErrors()) {
@@ -103,14 +111,14 @@ public class MerBsController {
 		if(merBs.getPhone() == null) {
 			return ResponseEntity.notFound().build();
 		}	
-		MerBsResource merBsResource = new MerBsResource(merBsDto);
+		MerBsResource merBsResource = new MerBsResource(merBsDto,true);
 				
 		return ResponseEntity.ok().body(merBsResource);				
 	}
 			
 
 	@DeleteMapping("/{merNo}")
-	public ResponseEntity delMerInfo(@PathVariable Long merNo) {
+	public ResponseEntity delMerInfo(@PathVariable Long merNo,  @CurrentUser Account currentUser  ) {
 		
 		Optional<MerBs> optMerBs  =merService.findMerBsById(merNo);
 		
@@ -123,6 +131,10 @@ public class MerBsController {
 		return ResponseEntity.ok().build();				
 	}
 	
+	
+	
+	
+		
 	public MerBsDto mappingToDto(MerBs merBs) {
 			
 		MerBsDto merBsDto = modelMapper.map(merBs, MerBsDto.class);

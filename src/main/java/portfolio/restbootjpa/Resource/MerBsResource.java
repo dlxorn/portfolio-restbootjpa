@@ -17,17 +17,21 @@ public class MerBsResource  extends  RepresentationModel<MerBsResource>{
 	private MerBsDto merBsDto;
 	
 	
-	public MerBsResource( MerBsDto merBsDto) {
+	public MerBsResource( MerBsDto merBsDto, boolean isLogin) {
 		super();
 		this.merBsDto = merBsDto;
 		
 		WebMvcLinkBuilder selfLinkBuilder = linkTo(MerBsController.class).slash(merBsDto.getMerNo());	
-		this.add(selfLinkBuilder.withSelfRel());					
-		this.add(linkTo(MerBsController.class).withRel("create-merbs").withType("POST"));
+		this.add(selfLinkBuilder.withSelfRel());
+		this.add(linkTo(MerBsController.class).withRel("merbs-list").withType("GET"));
 		this.add(linkTo(MerBsController.class).slash(merBsDto.getMerNo()).withRel("read-merbs").withType("GET"));	
+		
+				
+		if(isLogin) {
+		this.add(linkTo(MerBsController.class).withRel("create-merbs").withType("POST"));		
 		this.add(linkTo(MerBsController.class).withRel("update-merbs").withType("PUT"));
 		this.add(linkTo(MerBsController.class).slash(merBsDto.getMerNo()).withRel("delete-merbs").withType("DELETE"));
-		this.add(linkTo(MerBsController.class).withRel("merbs-list").withType("GET"));
+		}
 		
 	}
 			

@@ -13,7 +13,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.security.oauth2.provider.token.store.InMemoryTokenStore;
 
-import portfolio.restbootjpa.account.AccountService;
+import portfolio.restbootjpa.accounts.AccountService;
 
 // 이렇게 적용하는 순간 springsecurity 해주는 기본 config가 더 이상 적용되지 않는다.
 // 내가 설정한 대로 적용된다는 뜻인 것 같다

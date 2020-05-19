@@ -1,4 +1,4 @@
-package portfolio.restbootjpa.account;
+package portfolio.restbootjpa.accounts;
 
 public enum AccountRole {
 	

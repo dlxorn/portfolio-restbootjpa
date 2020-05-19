@@ -1,4 +1,4 @@
-package portfolio.restbootjpa.account;
+package portfolio.restbootjpa.accounts;
 
 import java.util.Set;
 

@@ -1,4 +1,4 @@
-package portfolio.restbootjpa.account;
+package portfolio.restbootjpa.accounts;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

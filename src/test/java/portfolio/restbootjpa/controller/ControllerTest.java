@@ -11,6 +11,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.util.Optional;
+import java.util.Set;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -33,7 +34,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import portfolio.restbootjpa.Entity.Email;
 import portfolio.restbootjpa.Entity.MerBs;
 import portfolio.restbootjpa.Entity.Phone;
-import portfolio.restbootjpa.account.AccountService;
+import portfolio.restbootjpa.accounts.Account;
+import portfolio.restbootjpa.accounts.AccountRole;
+import portfolio.restbootjpa.accounts.AccountService;
 import portfolio.restbootjpa.common.AppProperties;
 import portfolio.restbootjpa.dto.MerBsDto;
 import portfolio.restbootjpa.repository.ContactRepository;
@@ -96,20 +99,27 @@ public class ControllerTest {
 	
 	
 	@Test
-	public void getMerBsInfoTest() throws Exception {
+	public void getMerBsInfoTestLogin() throws Exception {
 		
 		Phone phone = Phone.builder().contactCtnt("01082821111").build();
 		Email email = Email.builder().contactCtnt("like@naver.com").build();
-		
+		contactRepository.save(phone);
+		contactRepository.save(email);
+				
 		//MERBS
 		MerBs merBs = MerBs.builder().merNm("hehe").build();	
 		merBs.setPhone(phone);
 		merBs.setEmail(email);
 					
 		merBsRepository.save(merBs);	
+		
+		em.flush();	
+		em.clear();
 			
 	    mockMvc.perform(
-				get("/api/merbs/"+merBs.getMerNo()).contentType(MediaType.APPLICATION_JSON)
+				get("/api/merbs/"+merBs.getMerNo())
+				.header(HttpHeaders.AUTHORIZATION,  getBearerToken(true))
+				.contentType(MediaType.APPLICATION_JSON)		
 				.accept(MediaTypes.HAL_JSON))						
 		.andDo(print())
 		.andExpect(status().isOk())			
@@ -122,6 +132,42 @@ public class ControllerTest {
 		.andExpect(jsonPath("_links.read-merbs").exists())	 
 		.andExpect(jsonPath("_links.update-merbs").exists())	 
 		.andExpect(jsonPath("_links.delete-merbs").exists())	 	
+		.andExpect(jsonPath("_links.merbs-list").exists())	 	
+		;
+	    	
+	}
+	
+	
+	@Test
+	public void getMerBsInfoTestNoLogin() throws Exception {
+		
+		Phone phone = Phone.builder().contactCtnt("01082821111").build();
+		Email email = Email.builder().contactCtnt("like@naver.com").build();
+		contactRepository.save(phone);
+		contactRepository.save(email);
+				
+		//MERBS
+		MerBs merBs = MerBs.builder().merNm("hehe").build();	
+		merBs.setPhone(phone);
+		merBs.setEmail(email);
+					
+		merBsRepository.save(merBs);	
+		
+		em.flush();	
+		em.clear();
+			
+	    mockMvc.perform(
+				get("/api/merbs/"+merBs.getMerNo())		
+				.contentType(MediaType.APPLICATION_JSON)		
+				.accept(MediaTypes.HAL_JSON))						
+		.andDo(print())
+		.andExpect(status().isOk())			
+		.andExpect(jsonPath("merNo").exists())  
+		.andExpect(jsonPath("merNo").value(merBs.getMerNo()))
+		.andExpect(jsonPath("phoneNumber").value(phone.getContactCtnt()))
+		.andExpect(jsonPath("email").value(email.getContactCtnt()))
+		.andExpect(jsonPath("_links.self").exists())		
+		.andExpect(jsonPath("_links.read-merbs").exists())	 	 	
 		.andExpect(jsonPath("_links.merbs-list").exists())	 	
 		;
 	    	
@@ -157,6 +203,28 @@ public class ControllerTest {
 	        
 		
 	}
+	
+	
+	@Test
+	public void saveMerBsInfoTestNoLogin() throws Exception {
+		
+		MerBsDto merBsDto = MerBsDto.builder()
+				            .merNm("하하하하!!!")
+				            .regDtm("202005182222")
+				            .bbrNo("288383")
+				            .phoneNumber("01033445958")
+				            .email("like@naver.com")
+							.build() ;						
+			
+	    mockMvc.perform(
+				post("/api/merbs")			
+				.contentType(MediaType.APPLICATION_JSON)			
+				.accept(MediaTypes.HAL_JSON)
+			   .content(objectMapper.writeValueAsString(merBsDto))	)						
+		.andDo(print())
+		.andExpect(status().isUnauthorized()) ;  //무허가 접근인지 확인   		     
+		
+	}
 		
 	
 	
@@ -173,6 +241,7 @@ public void updateMerBsInfoTest() throws Exception {
 	
     mockMvc.perform(
 				post("/api/merbs")
+				.header(HttpHeaders.AUTHORIZATION,  getBearerToken(true))
 				.contentType(MediaType.APPLICATION_JSON)			
 				.accept(MediaTypes.HAL_JSON)
 			   .content(objectMapper.writeValueAsString(merBsDto))	)						
@@ -211,6 +280,29 @@ public void updateMerBsInfoTest() throws Exception {
 	assertThat(merBs2.getEmail().getContactCtnt()).isEqualTo(merBsDto2.getEmail());
                	
 }
+
+
+@Test  
+public void updateMerBsInfoTestNoLogin() throws Exception {
+	
+	MerBsDto merBsDto = MerBsDto.builder()
+            .merNm("하하하하!!!")
+            .regDtm("202005182222")
+            .bbrNo("288383")
+            .phoneNumber("01033445958")
+            .email("like@naver.com")
+			.build() ;			
+	
+    mockMvc.perform(
+				post("/api/merbs")
+				.contentType(MediaType.APPLICATION_JSON)			
+				.accept(MediaTypes.HAL_JSON)
+			   .content(objectMapper.writeValueAsString(merBsDto))	)						
+		.andDo(print())
+		.andExpect(status().isUnauthorized());
+ 
+               	
+}
 	
 	
 	@Test
@@ -223,6 +315,7 @@ public void updateMerBsInfoTest() throws Exception {
 		
 	    mockMvc.perform(
 					delete("/api/merbs/"+ merBs.getMerNo())
+					.header(HttpHeaders.AUTHORIZATION,  getBearerToken(true))
 					.contentType(MediaType.APPLICATION_JSON)			
 					.accept(MediaTypes.HAL_JSON)					)	
 			.andDo(print())
@@ -236,6 +329,25 @@ public void updateMerBsInfoTest() throws Exception {
 	}
 	
 	
+	@Test
+	public void deleteMerBsInfoTestNoLogin() throws Exception {
+		
+		//MERBS
+		MerBs merBs = MerBs.builder().merNm("hehe").build();	
+					
+		merBsRepository.save(merBs);	
+		
+	    mockMvc.perform(
+					delete("/api/merbs/"+ merBs.getMerNo())
+					.contentType(MediaType.APPLICATION_JSON)			
+					.accept(MediaTypes.HAL_JSON)					)	
+			.andDo(print())
+			.andExpect(status().isUnauthorized())		;
+	    	    
+	}
+	
+	
+	
 	
 	@Test
 	public void getMerBsInfoListTest() throws Exception {
@@ -244,14 +356,61 @@ public void updateMerBsInfoTest() throws Exception {
 		
 	    mockMvc.perform(
 					get("/api/merbs/")
+					.header(HttpHeaders.AUTHORIZATION,  getBearerToken(true))
 					.param("page","0")
 					.param("size", "5")
 					.param("sort","merNo,DESC")
 					.contentType(MediaType.APPLICATION_JSON)			
 					.accept(MediaTypes.HAL_JSON)					)	
 			.andDo(print())
-			.andExpect(status().isOk())		;	    
+			.andExpect(status().isOk())		
+			.andExpect(jsonPath("_embedded.merbsinfolist[0]._links.self").exists())
+	    	.andExpect(jsonPath("_embedded.merbsinfolist[0]._links.merbs-list").exists())
+	    	.andExpect(jsonPath("_embedded.merbsinfolist[0]._links.read-merbs").exists())
+	    	.andExpect(jsonPath("_embedded.merbsinfolist[0]._links.create-merbs").exists())
+	    	.andExpect(jsonPath("_embedded.merbsinfolist[0]._links.update-merbs").exists())
+	    	.andExpect(jsonPath("_embedded.merbsinfolist[0]._links.delete-merbs").exists())	    	
+	    	.andExpect(jsonPath("_links.first").exists())
+	    	.andExpect(jsonPath("_links.self").exists())
+	    	.andExpect(jsonPath("_links.next").exists())
+	    	.andExpect(jsonPath("_links.last").exists())
+	    	
+	    
+	    
+			;	    
 	}
+	
+	
+	
+	@Test
+	public void getMerBsInfoListTestNoLogin() throws Exception {
+		
+		makeMerBsData();
+		
+	    mockMvc.perform(
+					get("/api/merbs/")				
+					.param("page","0")
+					.param("size", "5")
+					.param("sort","merNo,DESC")
+					.contentType(MediaType.APPLICATION_JSON)			
+					.accept(MediaTypes.HAL_JSON)					)	
+			.andDo(print())
+			.andExpect(status().isOk())			   
+		.andExpect(jsonPath("_embedded.merbsinfolist[0]._links.self").exists())
+    	.andExpect(jsonPath("_embedded.merbsinfolist[0]._links.merbs-list").exists())
+    	.andExpect(jsonPath("_embedded.merbsinfolist[0]._links.read-merbs").exists())
+    	.andExpect(jsonPath("_embedded.merbsinfolist[0]._links.create-merbs").doesNotExist())
+    	.andExpect(jsonPath("_embedded.merbsinfolist[0]._links.update-merbs").doesNotExist())
+    	.andExpect(jsonPath("_embedded.merbsinfolist[0]._links.delete-merbs").doesNotExist())	    	
+    	.andExpect(jsonPath("_links.first").exists())
+    	.andExpect(jsonPath("_links.self").exists())
+    	.andExpect(jsonPath("_links.next").exists())
+    	.andExpect(jsonPath("_links.last").exists())
+    	
+    	;
+	}
+	
+	
 	
 
 	public void makeMerBsData() {
@@ -270,19 +429,19 @@ public void updateMerBsInfoTest() throws Exception {
 	
 	
 		
-//  기본적인 아이디를  하나 자동 생성하게 둠 .현재 필요 없음
-//	private Account createAccount() {
-//		 
-//		 //Given
-//		 Account account = Account.builder()
-//		 		.email(appProperties.getUserUsername())
-//		 		.password(appProperties.getUserPassword())	
-//		 		.roles(Set.of(AccountRole.ADMIN, AccountRole.USER))
-//		 		.build();
-//		 
-//		return  this.accountService.saveAccount(account) ;	 
-//				
-//	}
+//  시작 히 아이디 하나 생성해도록 설정해둠 그래서  현재 필요 없음
+	private Account createAccount() {
+		 
+		 //Given
+		 Account account = Account.builder()
+		 		.email(appProperties.getUserUsername())
+		 		.password(appProperties.getUserPassword())	
+		 		.roles(Set.of(AccountRole.ADMIN, AccountRole.USER))
+		 		.build();
+		 
+		return  this.accountService.saveAccount(account) ;	 
+				
+	}
 	
 	private String getBearerToken(boolean needToCreateAccount) throws Exception {
 		return "Bearer " + getAccessToken(needToCreateAccount) ;

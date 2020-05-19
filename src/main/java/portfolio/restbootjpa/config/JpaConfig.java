@@ -24,14 +24,13 @@ public class JpaConfig {
 					public Optional<String> getCurrentAuditor() {
 						
 						SecurityContext context = SecurityContextHolder.getContext();
-						Authentication authentication = context.getAuthentication();					
+						Authentication authentication = context.getAuthentication();	
 						
-						String username = "무인증 로그인";
-						
+						String username = "무인증 유저";
 						if(authentication != null) {
-							 username = authentication.getName();
-							
-						}
+						username = authentication.getName();
+						}	
+						
 						return  Optional.of(username);
 					}			
 			

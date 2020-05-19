@@ -11,9 +11,9 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import portfolio.restbootjpa.account.Account;
-import portfolio.restbootjpa.account.AccountRole;
-import portfolio.restbootjpa.account.AccountService;
+import portfolio.restbootjpa.accounts.Account;
+import portfolio.restbootjpa.accounts.AccountRole;
+import portfolio.restbootjpa.accounts.AccountService;
 import portfolio.restbootjpa.common.AppProperties;
 
 
@@ -30,9 +30,8 @@ public class AppConfig {
 		return PasswordEncoderFactories.createDelegatingPasswordEncoder();		
 		                                                                       
 	}
-	
-	
-    //테스트용
+		
+    //테스트용 임시 생성 데이터
 	@Bean
 	public ApplicationRunner applicationRunner() {
 		return new ApplicationRunner() {

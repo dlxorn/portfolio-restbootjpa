@@ -11,7 +11,7 @@ import org.springframework.security.oauth2.config.annotation.web.configurers.Aut
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerSecurityConfigurer;
 import org.springframework.security.oauth2.provider.token.TokenStore;
 
-import portfolio.restbootjpa.account.AccountService;
+import portfolio.restbootjpa.accounts.AccountService;
 import portfolio.restbootjpa.common.AppProperties;
 
 @Configuration
@@ -46,9 +46,8 @@ public class AuthServerConfig extends AuthorizationServerConfigurerAdapter{
 	
 	@Override
 	public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
-
 		
-		clients.inMemory()	 //TODO 인메모리용에서 바꿀 것
+		clients.inMemory()	 //TODO 인메모리 안쓰고 jdbc사용하도록 바꿀 것
 		   .withClient(appProperties.getClientId())
 		   .authorizedGrantTypes("password","refresh_token") 
 		   .scopes("read", "write") 
