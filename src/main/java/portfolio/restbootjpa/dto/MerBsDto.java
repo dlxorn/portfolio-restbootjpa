@@ -1,6 +1,7 @@
 package portfolio.restbootjpa.dto;
 
 import javax.validation.constraints.Email;
+import javax.validation.constraints.NotEmpty;
 
 import org.hibernate.validator.constraints.Length;
 
@@ -14,22 +15,22 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class MerBsDto {
-		
 	
-//	@Length(max=9)
-	private Long merNo;	
-//	@Length(max=100)
+    private Long merNo;	  
+        
+    @NotEmpty
+	@Length(max=100)
 	private String merNm;
-//	@Length(max=14)
-	private String regDtm;
-//	@Length(max=14)
+    @NotEmpty  
+	@Length(min=14 , max=14)
+	private String regDtm;	
+	@Length(min=14 , max=14)
 	private String cnlDtm;
-//	@Length(max=6)
+	@Length(min=6 ,max=6)
 	private String bbrNo;	
 	private String phoneNumber;
-//	@Email
-	private String email;	
-		
+	@Email
+	private String email;			
 	
 
 }

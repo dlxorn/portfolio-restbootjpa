@@ -133,9 +133,11 @@ public class ControllerTest {
 		.andExpect(jsonPath("_links.update-merbs").exists())	 
 		.andExpect(jsonPath("_links.delete-merbs").exists())	 	
 		.andExpect(jsonPath("_links.merbs-list").exists())	 	
-		;
-	    	
+		;	    	
 	}
+	
+	
+	
 	
 	
 	@Test
@@ -179,7 +181,7 @@ public class ControllerTest {
 		
 		MerBsDto merBsDto = MerBsDto.builder()
 				            .merNm("하하하하!!!")
-				            .regDtm("202005182222")
+				            .regDtm("20200518102233")
 				            .bbrNo("288383")
 				            .phoneNumber("01033445958")
 				            .email("like@naver.com")
@@ -203,6 +205,32 @@ public class ControllerTest {
 	        
 		
 	}
+	
+	
+	
+@Test
+public void saveMerBsInfoTestIncorrectData() throws Exception {
+	
+	MerBsDto merBsDto = MerBsDto.builder()
+			            .merNm("하하하하!!!")
+			            .regDtm("202005181022332")
+			            .bbrNo("2883833")
+			            .phoneNumber("01033445958")
+			            .email("like@naver.com")
+						.build() ;						
+		
+    mockMvc.perform(
+			post("/api/merbs")
+			.header(HttpHeaders.AUTHORIZATION,  getBearerToken(true))
+			.contentType(MediaType.APPLICATION_JSON)			
+			.accept(MediaTypes.HAL_JSON)
+		   .content(objectMapper.writeValueAsString(merBsDto))	)						
+	.andDo(print())
+	.andExpect(status().isBadRequest())		;	  		
+	
+        
+	
+}
 	
 	
 	@Test
@@ -233,7 +261,7 @@ public void updateMerBsInfoTest() throws Exception {
 	
 	MerBsDto merBsDto = MerBsDto.builder()
             .merNm("하하하하!!!")
-            .regDtm("202005182222")
+            .regDtm("20200518222210")
             .bbrNo("288383")
             .phoneNumber("01033445958")
             .email("like@naver.com")
@@ -256,13 +284,14 @@ public void updateMerBsInfoTest() throws Exception {
 			.merNo(merBs.getMerNo())
             .merNm("호호호호호!!!")
             .regDtm("20200519222222")
-            .bbrNo("9999999")
+            .bbrNo("999999")
             .phoneNumber("01081815923")
             .email("hate@naver.com")
 			.build() ;	
     
 	mockMvc.perform(
 			put("/api/merbs")
+			.header(HttpHeaders.AUTHORIZATION,  getBearerToken(true))
 			.contentType(MediaType.APPLICATION_JSON)			
 			.accept(MediaTypes.HAL_JSON)
 		   .content(objectMapper.writeValueAsString(merBsDto2))	)						
@@ -280,6 +309,8 @@ public void updateMerBsInfoTest() throws Exception {
 	assertThat(merBs2.getEmail().getContactCtnt()).isEqualTo(merBsDto2.getEmail());
                	
 }
+
+
 
 
 @Test  
@@ -300,9 +331,14 @@ public void updateMerBsInfoTestNoLogin() throws Exception {
 			   .content(objectMapper.writeValueAsString(merBsDto))	)						
 		.andDo(print())
 		.andExpect(status().isUnauthorized());
- 
                	
 }
+
+
+
+
+
+
 	
 	
 	@Test
@@ -346,8 +382,7 @@ public void updateMerBsInfoTestNoLogin() throws Exception {
 	    	    
 	}
 	
-	
-	
+		
 	
 	@Test
 	public void getMerBsInfoListTest() throws Exception {
@@ -374,12 +409,10 @@ public void updateMerBsInfoTestNoLogin() throws Exception {
 	    	.andExpect(jsonPath("_links.self").exists())
 	    	.andExpect(jsonPath("_links.next").exists())
 	    	.andExpect(jsonPath("_links.last").exists())
-	    	
-	    
 	    
 			;	    
 	}
-	
+		
 	
 	
 	@Test
@@ -409,6 +442,8 @@ public void updateMerBsInfoTestNoLogin() throws Exception {
     	
     	;
 	}
+	
+	
 	
 	
 	

@@ -1,9 +1,6 @@
 package portfolio.restbootjpa.constraint;
 
 
-public enum MerClientType {
- 
-	buisness, individual
-	
-
+public enum MerClientType { 
+	BUISNESS,INVIDUAL
 }

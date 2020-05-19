@@ -9,7 +9,6 @@ import lombok.Getter;
 import lombok.Setter;
 
 
-//properties에 설정값을 만들어 뒤기 위하여 이거 쓰는 것 같다.
 @Component
 @ConfigurationProperties(prefix = "my-app")
 @Getter

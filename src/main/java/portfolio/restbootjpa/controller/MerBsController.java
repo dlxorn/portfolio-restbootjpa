@@ -33,6 +33,7 @@ import portfolio.restbootjpa.accounts.Account;
 import portfolio.restbootjpa.accounts.CurrentUser;
 import portfolio.restbootjpa.dto.MerBsDto;
 import portfolio.restbootjpa.service.MerService;
+import portfolio.restbootjpa.validator.MerBsValidator;
 
 @RestController
 @RequestMapping(value = "/api/merbs", produces = MediaTypes.HAL_JSON_VALUE)
@@ -42,6 +43,11 @@ public class MerBsController {
 	MerService merService;	
 	@Autowired
 	ModelMapper modelMapper;
+	
+	@Autowired
+	MerBsValidator merBsValidator;
+	
+	
 	
 	@GetMapping   
 	public ResponseEntity getMerBsInfoList(Pageable pageable,   PagedResourcesAssembler<MerBs> assembler ,  @CurrentUser Account currentUser  ) {	    
@@ -77,13 +83,15 @@ public class MerBsController {
 	
 	@PostMapping
 	public ResponseEntity createMerInfo(@RequestBody @Valid MerBsDto merBsDto, Errors errors, @CurrentUser Account currentUser  ) {		
-
-		
-		
-		
+			
 		if (errors.hasErrors()) {
 			return ResponseEntity.badRequest().body(errors);
-		}
+		}				
+		merBsValidator.commonValidate(merBsDto,errors );		
+		if (errors.hasErrors()) {
+			return ResponseEntity.badRequest().body(errors);
+		}	
+		
 								
 		MerBs merBs = merService.saveFromMerBsDto(merBsDto);	
 			
@@ -100,10 +108,15 @@ public class MerBsController {
 	@PutMapping
 	public ResponseEntity updateMerInfo(@RequestBody @Valid MerBsDto merBsDto, Errors errors,  @CurrentUser Account currentUser  ) {
 		
-
 		if (errors.hasErrors()) {
 			return ResponseEntity.badRequest().body(errors);
 		}
+		
+		merBsValidator.commonValidate(merBsDto,errors );		
+		if (errors.hasErrors()) {
+			return ResponseEntity.badRequest().body(errors);
+		}	
+		
 		
 		
 		MerBs merBs =merService.updateMerBsDto(merBsDto);
@@ -151,6 +164,12 @@ public class MerBsController {
 		return merBsDto;
 		
 	}
+	
+	
+	
+	
+	
+	
 	
 	
 	

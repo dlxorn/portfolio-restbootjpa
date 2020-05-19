@@ -27,8 +27,7 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter{
 				.authenticated()
 				.and()
 		    	.exceptionHandling()  //에러 핸들러인데 에러핸들런 중에 에러가 나며면
-			  .accessDeniedHandler(new OAuth2AccessDeniedHandler()); //OAuth2AccessDeniedHandler를 사용하여 핸들링을 해준다.
-			  
+			  .accessDeniedHandler(new OAuth2AccessDeniedHandler()); //OAuth2AccessDeniedHandler를 사용하여 핸들링을 해준다.		  
 		
 	}
 
