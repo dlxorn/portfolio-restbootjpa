@@ -1,6 +1,5 @@
 package portfolio.restbootjpa.Entity;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,6 +32,9 @@ public class MerBs extends BaseEntity{
 	@Id
 	private Long merNo;
 		
+	
+	
+	@Column(length =9)
 	private String merNm;
 		
 	@Column(length =14)
@@ -53,6 +55,10 @@ public class MerBs extends BaseEntity{
 	
 	@OneToMany(mappedBy = "merBs")
 	private List<MerReprRel> merRsvrRel = new ArrayList<MerReprRel>();
+	
+	@Column(length =6)
+	private String bbrNo;
+			
 	
 	
 	@OneToOne(fetch=FetchType.LAZY)	

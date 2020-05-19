@@ -14,7 +14,7 @@ import portfolio.restbootjpa.Entity.MerBs;
 
 public interface MerBsRepository extends JpaRepository<MerBs, Long>  {
 	
-	public  List<MerBs> findByMerNm(String merNm);
+	public  List<MerBs> findByMerNm(String merNm);	
 	
 	public  List<MerBs> findYoyoByMerNmAndMerNmStartingWith(String merNm,String merNmlike);
 	

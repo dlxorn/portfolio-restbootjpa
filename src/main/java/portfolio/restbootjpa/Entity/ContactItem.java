@@ -19,6 +19,7 @@ import lombok.Setter;
 @DiscriminatorColumn(name = "CONTACT_TYPE")
 @AllArgsConstructor
 @NoArgsConstructor
+@Setter
 @Getter
 public  class ContactItem extends BaseEntity{
 		
@@ -27,8 +28,6 @@ public  class ContactItem extends BaseEntity{
 	private Long id;		
 	
 	private String contactCtnt;
-	
-	
-	
+				
 
 }

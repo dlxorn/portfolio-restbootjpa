@@ -10,6 +10,7 @@ import javax.persistence.PersistenceContext;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -47,12 +48,8 @@ public class RepositoryTest {
 	@Autowired
 	ReRegDtRepository reRegDtRepository;		
 	@Autowired
-	MerReprRelRepository merReprRelRepository;
-	
-	
-	
-	
-				
+	MerClientRelRepository merClientRelRepository;
+			
 		
 	@Test
 	public void merBsCRUDTest() {
@@ -231,30 +228,20 @@ public class RepositoryTest {
 		MerBs merBs2 = optionalMerBs2.get();
 		
 		assertThat(merBs.getMerNo()).isEqualTo(merBs2.getMerNo());
-	
-			
+				
 		merBs2.setPhone(phone);
 		merBs2.setEmail(email);
 		
 		em.flush();				
 		em.clear();	
-		
-		
-		
+				
 		Optional<MerBs> optMerBs3 = merBsRepository.findById(merBs2.getMerNo());
 		assertThat(optMerBs3.isEmpty() == false).isEqualTo(true);		
 		MerBs castingMerBs3 = optMerBs3.get();
 		assertThat(castingMerBs3.getPhone().getContactCtnt()).isEqualTo(phone.getContactCtnt());	
-		
 			
-		
-	
 	}
-	
-	
-	
-	
-	
+		
 	@Test
 	public void ReRegCRUDTest() {
 								
@@ -367,7 +354,7 @@ public class RepositoryTest {
 		
 		MerReprRel merReprRel = MerReprRel.builder().merBs(merBs).merClientBs(merClientBs).build();
 				
-		merReprRelRepository.save(merReprRel);
+		merClientRelRepository.save(merReprRel);
 				
 		em.flush();				
 		em.clear();	
@@ -377,11 +364,7 @@ public class RepositoryTest {
 			
 		assertThat(merClientBs.getClientNm()).isEqualTo(merBs3.getMerRsvrRel().get(0).getMerClientBs().getClientNm());		
 		
-		
-		em.flush();				
-		em.clear();	
-						
-		
+				
 		
 	}
 		

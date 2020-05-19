@@ -6,10 +6,12 @@ import javax.persistence.Entity;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
 @DiscriminatorValue("e_mail") 
 @Getter
+@Setter
 @NoArgsConstructor
 public class Email  extends ContactItem{
 	

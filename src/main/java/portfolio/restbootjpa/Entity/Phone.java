@@ -12,6 +12,7 @@ import lombok.Setter;
 @Entity
 @DiscriminatorValue("phone") 
 @Getter
+@Setter
 @NoArgsConstructor
 public class Phone  extends ContactItem{
 	
