@@ -16,8 +16,7 @@ public class MerBsValidator {
 			
 		if(isNumeric(dto.getBbrNo()) == false) {			
 			errors.rejectValue("bbrNo", "wrongValue", "bbrNo is wrong");		
-		}
-		
+		}		
 		
 	
 		if(dto.getCnlDtm() != null ) {

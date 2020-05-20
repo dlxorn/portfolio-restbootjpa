@@ -141,13 +141,11 @@ public class MerBsController {
 		
 		merService.deleteMerBs(optMerBs.get());	
 		
-		return ResponseEntity.ok().build();				
-	}
-	
-	
-	
-	
+		MerBsResource merBsResource = new MerBsResource(new MerBsDto(),true);		
 		
+		return ResponseEntity.ok().body(merBsResource);				
+	}
+				
 	public MerBsDto mappingToDto(MerBs merBs) {
 			
 		MerBsDto merBsDto = modelMapper.map(merBs, MerBsDto.class);
@@ -164,15 +162,6 @@ public class MerBsController {
 		return merBsDto;
 		
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
 	
 	
 

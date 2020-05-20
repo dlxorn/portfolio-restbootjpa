@@ -1,6 +1,14 @@
 package portfolio.restbootjpa.controller;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
+import static org.springframework.restdocs.headers.HeaderDocumentation.requestHeaders;
+import static org.springframework.restdocs.hypermedia.HypermediaDocumentation.linkWithRel;
+import static org.springframework.restdocs.hypermedia.HypermediaDocumentation.links;
+import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
+import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
+import static org.springframework.restdocs.payload.PayloadDocumentation.relaxedResponseFields;
+import static org.springframework.restdocs.payload.PayloadDocumentation.relaxedRequestFields;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.httpBasic;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -20,8 +28,10 @@ import javax.transaction.Transactional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.Import;
 import org.springframework.hateoas.MediaTypes;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -38,6 +48,7 @@ import portfolio.restbootjpa.accounts.Account;
 import portfolio.restbootjpa.accounts.AccountRole;
 import portfolio.restbootjpa.accounts.AccountService;
 import portfolio.restbootjpa.common.AppProperties;
+import portfolio.restbootjpa.common.RestDocsConfiguration;
 import portfolio.restbootjpa.dto.MerBsDto;
 import portfolio.restbootjpa.repository.ContactRepository;
 import portfolio.restbootjpa.repository.MerBsRepository;
@@ -49,7 +60,9 @@ import portfolio.restbootjpa.repository.ReRegDtRepository;
 
 @SpringBootTest
 @AutoConfigureMockMvc  
+@AutoConfigureRestDocs
 @Transactional
+@Import(RestDocsConfiguration.class)
 public class ControllerTest {
 		
 	@Autowired
@@ -107,7 +120,10 @@ public class ControllerTest {
 		contactRepository.save(email);
 				
 		//MERBS
-		MerBs merBs = MerBs.builder().merNm("hehe").build();	
+		MerBs merBs = MerBs.builder().merNm("영춘 술집")
+				                     .regDtm("20200520101010")
+				                     .cnlDtm("20200520120101")				                   
+				                     .build();	
 		merBs.setPhone(phone);
 		merBs.setEmail(email);
 					
@@ -133,6 +149,30 @@ public class ControllerTest {
 		.andExpect(jsonPath("_links.update-merbs").exists())	 
 		.andExpect(jsonPath("_links.delete-merbs").exists())	 	
 		.andExpect(jsonPath("_links.merbs-list").exists())	 	
+		.andDo(document("get-merbs",
+				links(    linkWithRel("self").description("link to self"),
+						  linkWithRel("merbs-list").description("가맹점 리스트 조회"),
+						  linkWithRel("read-merbs").description("가맹점 정보 조회"),
+						  linkWithRel("create-merbs").description("가맹점 신규 등록(로그인 이후 링크 제공,사용 가능)"),						
+						  linkWithRel("update-merbs").description("가맹점 정보 수정(로그인 이후 링크 제공,사용 가능)"),							
+						  linkWithRel("delete-merbs").description("가맹점 정보 삭제(로그인 이후 링크 제공,사용 가능)")
+					),				
+			requestHeaders(
+					headerWithName(HttpHeaders.AUTHORIZATION).description("authorization header(비로그인시 제외)"),
+					headerWithName(HttpHeaders.ACCEPT).description("accept header"), 
+					headerWithName(HttpHeaders.CONTENT_TYPE).description("content type header")
+			),		
+			relaxedResponseFields(
+					fieldWithPath("merNo").description("가맹점 번호"),
+					fieldWithPath("merNm").description("가맹점명"),
+					fieldWithPath("regDtm").description("등록 일시 (YYYYMMDDHHMMSS)"),
+					fieldWithPath("cnlDtm").description("해지 일시 (YYYYMMDDHHMMSS)"),
+					fieldWithPath("bbrNo").description("관리영업점번호(6자리 숫자)"),
+					fieldWithPath("phoneNumber").description("폰번호"),
+					fieldWithPath("email").description("이메일 주소")		
+			)));
+	;
+	    
 		;	    	
 	}
 	
@@ -176,11 +216,12 @@ public class ControllerTest {
 	}
 	
 		
+	//RESC-DOC 문서 생성 -merCreate
 	@Test
 	public void saveMerBsInfoTest() throws Exception {
 		
 		MerBsDto merBsDto = MerBsDto.builder()
-				            .merNm("하하하하!!!")
+				            .merNm("강남 오징어")
 				            .regDtm("20200518102233")
 				            .bbrNo("288383")
 				            .phoneNumber("01033445958")
@@ -194,9 +235,42 @@ public class ControllerTest {
 				.accept(MediaTypes.HAL_JSON)
 			   .content(objectMapper.writeValueAsString(merBsDto))	)						
 		.andDo(print())
-		.andExpect(status().isCreated())		;	    		
+		.andExpect(status().isCreated())		
+		.andDo(document("create-merbs",
+				links(    linkWithRel("self").description("link to self"),
+						  linkWithRel("merbs-list").description("가맹점 리스트 조회"),
+						  linkWithRel("read-merbs").description("가맹점 정보 조회"),
+						  linkWithRel("create-merbs").description("가맹점 신규 등록(로그인 이후 링크 제공,사용 가능)"),						
+						  linkWithRel("update-merbs").description("가맹점 정보 수정(로그인 이후 링크 제공,사용 가능)"),							
+						  linkWithRel("delete-merbs").description("가맹점 정보 삭제(로그인 이후 링크 제공,사용 가능)")
+					),				
+			requestHeaders(
+					headerWithName(HttpHeaders.AUTHORIZATION).description("authorization header"),
+					headerWithName(HttpHeaders.ACCEPT).description("accept header"), 
+					headerWithName(HttpHeaders.CONTENT_TYPE).description("content type header")
+			),
+			relaxedRequestFields(			
+					fieldWithPath("merNm").description("가맹점명"),
+					fieldWithPath("regDtm").description("등록 일자 (YYYYMMDDHHMMSS"),
+					fieldWithPath("bbrNo").description("관리영업점번호(6자리 숫자)"),
+					fieldWithPath("phoneNumber").description("폰번호"),
+					fieldWithPath("email").description("이메일 주소")															
+					
+			),
+			relaxedResponseFields(
+					fieldWithPath("merNo").description("생성된 가맹점 번호"),
+					fieldWithPath("merNm").description("가맹점명"),
+					fieldWithPath("regDtm").description("등록 일자 (YYYYMMDDHHMMSS)"),
+					fieldWithPath("cnlDtm").description("해지 일자 -미표시"),
+					fieldWithPath("bbrNo").description("관리영업점번호(6자리 숫자)"),
+					fieldWithPath("phoneNumber").description("폰번호"),
+					fieldWithPath("email").description("이메일 주소")		
+			)));
+		
+		
+		;	    		
 			
-	   MerBs merBs =merBsRepository.findByMerNm("하하하하!!!").get(0);
+	   MerBs merBs =merBsRepository.findByMerNm("강남 오징어").get(0);
 	   	   	   
 	   assertThat(merBs.getBbrNo()).isEqualTo(merBsDto.getBbrNo());
 	   assertThat(merBs.getRegDtm()).isEqualTo(merBsDto.getRegDtm());
@@ -212,7 +286,7 @@ public class ControllerTest {
 public void saveMerBsInfoTestIncorrectData() throws Exception {
 	
 	MerBsDto merBsDto = MerBsDto.builder()
-			            .merNm("하하하하!!!")
+			            .merNm("공부방")
 			            .regDtm("202005181022332")
 			            .bbrNo("2883833")
 			            .phoneNumber("01033445958")
@@ -260,7 +334,7 @@ public void saveMerBsInfoTestIncorrectData() throws Exception {
 public void updateMerBsInfoTest() throws Exception {
 	
 	MerBsDto merBsDto = MerBsDto.builder()
-            .merNm("하하하하!!!")
+            .merNm("신홍포차")
             .regDtm("20200518222210")
             .bbrNo("288383")
             .phoneNumber("01033445958")
@@ -276,13 +350,13 @@ public void updateMerBsInfoTest() throws Exception {
 		.andDo(print())
 		.andExpect(status().isCreated());
     
-	MerBs merBs =merBsRepository.findByMerNm("하하하하!!!").get(0);
+	MerBs merBs =merBsRepository.findByMerNm("신홍포차").get(0);
 	   	   	      
     
     
 	MerBsDto merBsDto2 = MerBsDto.builder()
 			.merNo(merBs.getMerNo())
-            .merNm("호호호호호!!!")
+            .merNm("구적레스토랑")
             .regDtm("20200519222222")
             .bbrNo("999999")
             .phoneNumber("01081815923")
@@ -295,7 +369,42 @@ public void updateMerBsInfoTest() throws Exception {
 			.contentType(MediaType.APPLICATION_JSON)			
 			.accept(MediaTypes.HAL_JSON)
 		   .content(objectMapper.writeValueAsString(merBsDto2))	)						
-	.andDo(print()) ;
+	.andDo(print()) 
+	.andDo(document("update-merbs",
+			links(    linkWithRel("self").description("link to self"),
+					  linkWithRel("merbs-list").description("가맹점 리스트 조회"),
+					  linkWithRel("read-merbs").description("가맹점 정보 조회"),
+					  linkWithRel("create-merbs").description("가맹점 신규 등록(로그인 이후 링크 제공,사용 가능)"),						
+					  linkWithRel("update-merbs").description("가맹점 정보 수정(로그인 이후 링크 제공,사용 가능)"),							
+					  linkWithRel("delete-merbs").description("가맹점 정보 삭제(로그인 이후 링크 제공,사용 가능)")
+				),				
+		requestHeaders(
+				headerWithName(HttpHeaders.AUTHORIZATION).description("authorization header"),
+				headerWithName(HttpHeaders.ACCEPT).description("accept header"), 
+				headerWithName(HttpHeaders.CONTENT_TYPE).description("content type header")
+		),
+		relaxedRequestFields(			
+				fieldWithPath("merNo").description("가맹점 번호"),
+				fieldWithPath("merNm").description("가맹점명"),
+				fieldWithPath("regDtm").description("등록 일자 (YYYYMMDDHHMMSS)"),
+				fieldWithPath("cnlDtm").description("해지 일자 (YYYYMMDDHHMMSS)"),
+				fieldWithPath("bbrNo").description("관리영업점번호(6자리 숫자)"),
+				fieldWithPath("phoneNumber").description("폰번호"),
+				fieldWithPath("email").description("이메일 주소")															
+				
+		),
+		relaxedResponseFields(
+				fieldWithPath("merNo").description("가맹점 번호"),
+				fieldWithPath("merNm").description("가맹점명"),
+				fieldWithPath("regDtm").description("등록 일자 (YYYYMMDDHHMMSS)"),
+				fieldWithPath("cnlDtm").description("해지 일자 (YYYYMMDDHHMMSS)"),
+				fieldWithPath("bbrNo").description("관리영업점번호(6자리 숫자)"),
+				fieldWithPath("phoneNumber").description("폰번호"),
+				fieldWithPath("email").description("이메일 주소")		
+		)));
+	;
+	
+	
 	
 	Optional<MerBs> optMerBs =merBsRepository.findById(merBs.getMerNo());
     assertThat(optMerBs.isEmpty()).isEqualTo(false);
@@ -317,7 +426,7 @@ public void updateMerBsInfoTest() throws Exception {
 public void updateMerBsInfoTestNoLogin() throws Exception {
 	
 	MerBsDto merBsDto = MerBsDto.builder()
-            .merNm("하하하하!!!")
+            .merNm("테스트 가맹점")
             .regDtm("202005182222")
             .bbrNo("288383")
             .phoneNumber("01033445958")
@@ -355,7 +464,23 @@ public void updateMerBsInfoTestNoLogin() throws Exception {
 					.contentType(MediaType.APPLICATION_JSON)			
 					.accept(MediaTypes.HAL_JSON)					)	
 			.andDo(print())
-			.andExpect(status().isOk())		;
+			.andExpect(status().isOk())		
+			.andDo(document("delete-merbs",
+					links(    linkWithRel("self").description("link to self"),
+							  linkWithRel("merbs-list").description("가맹점 리스트 조회"),
+							  linkWithRel("read-merbs").description("가맹점 정보 조회"),
+							  linkWithRel("create-merbs").description("가맹점 신규 등록(로그인 이후 링크 제공,사용 가능)"),						
+							  linkWithRel("update-merbs").description("가맹점 정보 수정(로그인 이후 링크 제공,사용 가능)"),							
+							  linkWithRel("delete-merbs").description("가맹점 정보 삭제(로그인 이후 링크 제공,사용 가능)")
+						),				
+				requestHeaders(
+						headerWithName(HttpHeaders.AUTHORIZATION).description("authorization header"),
+						headerWithName(HttpHeaders.ACCEPT).description("accept header"), 
+						headerWithName(HttpHeaders.CONTENT_TYPE).description("content type header")
+				)			
+				));
+			
+			;
 	    
 	    
 	    Optional<MerBs> optMerbs = merBsRepository.findById(merBs.getMerNo());
@@ -392,8 +517,8 @@ public void updateMerBsInfoTestNoLogin() throws Exception {
 	    mockMvc.perform(
 					get("/api/merbs/")
 					.header(HttpHeaders.AUTHORIZATION,  getBearerToken(true))
-					.param("page","0")
-					.param("size", "5")
+					.param("page","1")
+					.param("size", "3")
 					.param("sort","merNo,DESC")
 					.contentType(MediaType.APPLICATION_JSON)			
 					.accept(MediaTypes.HAL_JSON)					)	
@@ -409,6 +534,20 @@ public void updateMerBsInfoTestNoLogin() throws Exception {
 	    	.andExpect(jsonPath("_links.self").exists())
 	    	.andExpect(jsonPath("_links.next").exists())
 	    	.andExpect(jsonPath("_links.last").exists())
+	    	.andDo(document("get-merbslist",
+	    			links(    linkWithRel("self").description("link to self"),
+	    					  linkWithRel("first").description("첫 페이지"),
+	    					  linkWithRel("last").description("마지막 페이지"),	
+	    					  linkWithRel("prev").description("이전 페이지"),	
+	    					  linkWithRel("next").description("다음 페이지")	    					  
+	    				 ),				
+	    		requestHeaders(
+	    				headerWithName(HttpHeaders.AUTHORIZATION).description("authorization header(비로그인시 제외)"),
+	    				headerWithName(HttpHeaders.ACCEPT).description("accept header"), 
+	    				headerWithName(HttpHeaders.CONTENT_TYPE).description("content type header")
+	    		)
+	
+	    		));
 	    
 			;	    
 	}
@@ -445,15 +584,15 @@ public void updateMerBsInfoTestNoLogin() throws Exception {
 	
 	
 	
-	
-	
 
 	public void makeMerBsData() {
 		
 		for(int i=0 ; i<10; i++) {	
 			
-			MerBs merBs = MerBs.builder().merNm("하하"+ i)								
-                    .build();		
+			MerBs merBs = MerBs.builder().merNm("가맹점"+ i)	
+				        .regDtm("202005182222")
+			            .bbrNo("288383")			         
+                        .build();		
 			merBsRepository.save(merBs);						
 		}
 		
