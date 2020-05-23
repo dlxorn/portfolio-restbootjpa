@@ -1,0 +1,35 @@
+package portfolio.restbootjpa.Resource;
+
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+
+import org.springframework.hateoas.RepresentationModel;
+import org.springframework.web.bind.annotation.RequestMethod;
+
+import com.fasterxml.jackson.annotation.JsonUnwrapped;
+
+import portfolio.restbootjpa.controller.MerClientController;
+import portfolio.restbootjpa.dto.MerClientDto;
+
+public class MerClientBsResource extends RepresentationModel<MerClientBsResource> {
+	
+	
+	@JsonUnwrapped
+	private MerClientDto merClientDto;
+	
+	
+	public MerClientBsResource (MerClientDto merClientDto, boolean isLogin) {	
+		
+		this.merClientDto = merClientDto;	
+		this.add(linkTo(MerClientController.class).withRel("merclient-list").withType(RequestMethod.GET.name()));
+		this.add(linkTo(MerClientController.class).slash(merClientDto.getClientNo()).withRel("read-merclient").withType(RequestMethod.GET.name()));		
+		
+		if(isLogin) {
+		this.add(linkTo(MerClientController.class).withRel("create-merclient").withType(RequestMethod.POST.name()));
+		this.add(linkTo(MerClientController.class).withRel("update-merclient").withType(RequestMethod.PUT.name()));
+		this.add(linkTo(MerClientController.class).slash(merClientDto.getClientNo()).withRel("delete-merclient").withType(RequestMethod.DELETE.name()));
+		}	
+		
+	}
+		
+	
+}

@@ -9,7 +9,7 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
-import portfolio.restbootjpa.Entity.MerBs;
+import portfolio.restbootjpa.entity.MerBs;
 
 
 public interface MerBsRepository extends JpaRepository<MerBs, Long>  {
@@ -35,13 +35,10 @@ public interface MerBsRepository extends JpaRepository<MerBs, Long>  {
         
     @Query(value = "select m from MerBs m left join fetch m.merClientBs c", countQuery ="select count(m) from MerBs m" )
     public Page<MerBs> findMerBsFetchJoinPage(Pageable pageable);
-  
     
     
     
     
     
-    
-	
 	
 }

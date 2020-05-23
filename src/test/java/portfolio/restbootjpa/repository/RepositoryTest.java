@@ -18,14 +18,14 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.transaction.annotation.Transactional;
 
-import portfolio.restbootjpa.Entity.ContactItem;
-import portfolio.restbootjpa.Entity.Email;
-import portfolio.restbootjpa.Entity.MerBs;
-import portfolio.restbootjpa.Entity.MerClientBs;
-import portfolio.restbootjpa.Entity.MerReprRel;
-import portfolio.restbootjpa.Entity.Phone;
-import portfolio.restbootjpa.Entity.ReRegBase;
-import portfolio.restbootjpa.Entity.ReRegDt;
+import portfolio.restbootjpa.entity.ContactItem;
+import portfolio.restbootjpa.entity.Email;
+import portfolio.restbootjpa.entity.MerBs;
+import portfolio.restbootjpa.entity.MerClientBs;
+import portfolio.restbootjpa.entity.MerReprRel;
+import portfolio.restbootjpa.entity.Phone;
+import portfolio.restbootjpa.entity.ReRegBase;
+import portfolio.restbootjpa.entity.ReRegDt;
 
 
 @SpringBootTest
@@ -77,8 +77,7 @@ public class RepositoryTest {
 		assertThat(merBs3.isEmpty()).isEqualTo(true);
 		
 		
-	}
-	
+	}	
 	
 	
 	@Test

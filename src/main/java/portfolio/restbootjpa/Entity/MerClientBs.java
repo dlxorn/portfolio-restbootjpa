@@ -1,4 +1,4 @@
-package portfolio.restbootjpa.Entity;
+package portfolio.restbootjpa.entity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,6 +24,7 @@ import portfolio.restbootjpa.constraint.MerClientType;
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
+@Setter
 @Builder
 public class MerClientBs extends BaseEntity {
 	

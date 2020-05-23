@@ -27,11 +27,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import portfolio.restbootjpa.Entity.MerBs;
 import portfolio.restbootjpa.Resource.MerBsResource;
 import portfolio.restbootjpa.accounts.Account;
 import portfolio.restbootjpa.accounts.CurrentUser;
 import portfolio.restbootjpa.dto.MerBsDto;
+import portfolio.restbootjpa.entity.MerBs;
 import portfolio.restbootjpa.service.MerService;
 import portfolio.restbootjpa.validator.MerBsValidator;
 
@@ -87,7 +87,7 @@ public class MerBsController {
 		if (errors.hasErrors()) {
 			return ResponseEntity.badRequest().body(errors);
 		}				
-		merBsValidator.commonValidate(merBsDto,errors );		
+		merBsValidator.validateCommonDomain(merBsDto,errors );		
 		if (errors.hasErrors()) {
 			return ResponseEntity.badRequest().body(errors);
 		}	
@@ -112,16 +112,14 @@ public class MerBsController {
 			return ResponseEntity.badRequest().body(errors);
 		}
 		
-		merBsValidator.commonValidate(merBsDto,errors );		
+		merBsValidator.validateUpdateDomain(merBsDto,errors );		
 		if (errors.hasErrors()) {
 			return ResponseEntity.badRequest().body(errors);
 		}	
-		
-		
-		
+			
 		MerBs merBs =merService.updateMerBsDto(merBsDto);
 		
-		if(merBs.getPhone() == null) {
+		if(merBs == null) {
 			return ResponseEntity.notFound().build();
 		}	
 		MerBsResource merBsResource = new MerBsResource(merBsDto,true);

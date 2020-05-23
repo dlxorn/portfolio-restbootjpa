@@ -10,10 +10,10 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import portfolio.restbootjpa.Entity.Email;
-import portfolio.restbootjpa.Entity.MerBs;
-import portfolio.restbootjpa.Entity.Phone;
 import portfolio.restbootjpa.dto.MerBsDto;
+import portfolio.restbootjpa.entity.Email;
+import portfolio.restbootjpa.entity.MerBs;
+import portfolio.restbootjpa.entity.Phone;
 import portfolio.restbootjpa.repository.ContactRepository;
 import portfolio.restbootjpa.repository.MerBsRepository;
 import portfolio.restbootjpa.repository.MerClientBsRepository;
@@ -106,8 +106,7 @@ public MerBs updateMerBsDto(MerBsDto merBsDto) {
      
      merBs.getPhone().setContactCtnt(merBsDto.getPhoneNumber());
      merBs.getEmail().setContactCtnt(merBsDto.getEmail());
-     
-     
+        
               
 	
 	 return merBs;

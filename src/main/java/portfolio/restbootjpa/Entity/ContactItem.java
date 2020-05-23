@@ -1,4 +1,4 @@
-package portfolio.restbootjpa.Entity;
+package portfolio.restbootjpa.entity;
 
 import javax.persistence.DiscriminatorColumn;
 import javax.persistence.Entity;

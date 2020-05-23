@@ -41,15 +41,16 @@ import org.springframework.test.web.servlet.ResultActions;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import portfolio.restbootjpa.Entity.Email;
-import portfolio.restbootjpa.Entity.MerBs;
-import portfolio.restbootjpa.Entity.Phone;
 import portfolio.restbootjpa.accounts.Account;
 import portfolio.restbootjpa.accounts.AccountRole;
 import portfolio.restbootjpa.accounts.AccountService;
 import portfolio.restbootjpa.common.AppProperties;
+import portfolio.restbootjpa.common.BaseTest;
 import portfolio.restbootjpa.common.RestDocsConfiguration;
 import portfolio.restbootjpa.dto.MerBsDto;
+import portfolio.restbootjpa.entity.Email;
+import portfolio.restbootjpa.entity.MerBs;
+import portfolio.restbootjpa.entity.Phone;
 import portfolio.restbootjpa.repository.ContactRepository;
 import portfolio.restbootjpa.repository.MerBsRepository;
 import portfolio.restbootjpa.repository.MerClientBsRepository;
@@ -58,12 +59,8 @@ import portfolio.restbootjpa.repository.PhoneRepository;
 import portfolio.restbootjpa.repository.ReRegBaseRepository;
 import portfolio.restbootjpa.repository.ReRegDtRepository;
 
-@SpringBootTest
-@AutoConfigureMockMvc  
-@AutoConfigureRestDocs
-@Transactional
-@Import(RestDocsConfiguration.class)
-public class ControllerTest {
+
+public class MerBsControllerTest extends BaseTest{
 		
 	@Autowired
 	protected MockMvc mockMvc;  
@@ -87,17 +84,8 @@ public class ControllerTest {
 	ReRegDtRepository reRegDtRepository;		
 	@Autowired
 	MerClientRelRepository merClientRelRepository;
-	@Autowired
-	AccountService accountService;
-	
-	@Autowired
-	AppProperties appProperties;
-	
-	
-	
-	
-	
-	
+		
+		
 	@BeforeEach
 	public void setUp() {
 		this.merBsRepository.deleteAll();
@@ -602,48 +590,7 @@ public void updateMerBsInfoTestNoLogin() throws Exception {
 	}
 	
 	
-		
-//  시작 히 아이디 하나 생성해도록 설정해둠 그래서  현재 필요 없음
-	private Account createAccount() {
-		 
-		 //Given
-		 Account account = Account.builder()
-		 		.email(appProperties.getUserUsername())
-		 		.password(appProperties.getUserPassword())	
-		 		.roles(Set.of(AccountRole.ADMIN, AccountRole.USER))
-		 		.build();
-		 
-		return  this.accountService.saveAccount(account) ;	 
-				
-	}
-	
-	private String getBearerToken(boolean needToCreateAccount) throws Exception {
-		return "Bearer " + getAccessToken(needToCreateAccount) ;
-	}
-	
 	
 
-	private String getAccessToken(boolean needToCreateAccount) throws Exception {
-	    	
-		if(needToCreateAccount) {
-	//	createAccount();
-		}		 
-		 
-		ResultActions perform = this.mockMvc.perform(post("/oauth/token") //인증서버가 등록이 되면 auth/token을 처리할 수 있는 핸들러가 적용이 된다.
-				     .with(httpBasic(appProperties.getClientId(), appProperties.getClientSecret())) //클라이언트 아이디와 시크릿을 가지고 basic -auth라는 헤더라는 만들었다.
-				     .param("username", appProperties.getUserUsername())
-				     .param("password", appProperties.getUserPassword())
-				     .param("grant_type", "password")
-				     
-				 );
-		 String responseBody = perform.andReturn().getResponse().getContentAsString();
-		Jackson2JsonParser  parser = new Jackson2JsonParser();
-			
-			
-		return parser.parseMap(responseBody).get("access_token").toString(); //이렇게 하면 access_token을 꺼낼 수 있다.
-	}
-
-
-		
 
 }

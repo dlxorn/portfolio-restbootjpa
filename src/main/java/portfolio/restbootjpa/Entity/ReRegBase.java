@@ -1,4 +1,4 @@
-package portfolio.restbootjpa.Entity;
+package portfolio.restbootjpa.entity;
 
 import java.util.ArrayList;
 import java.util.List;
