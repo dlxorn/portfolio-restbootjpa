@@ -73,7 +73,8 @@ public class MerBsController {
 		MerBsDto merBsDto = mappingToDto(merBs);		
 		
 	    boolean islogin =	currentUser != null ;	
-		MerBsResource merBsResource = new MerBsResource(merBsDto,islogin);												
+		MerBsResource merBsResource = new MerBsResource(merBsDto,islogin);	
+				
 				
 		return ResponseEntity.ok(merBsResource);
 
@@ -98,8 +99,7 @@ public class MerBsController {
 		
 		MerBsResource merBsResource = new MerBsResource(merBsDto, true);
 		WebMvcLinkBuilder selfLinkBuilder = linkTo(MerBsController.class).slash(merBs.getMerNo());
-		URI createdUri  = selfLinkBuilder.toUri() ;		
-
+		URI createdUri  = selfLinkBuilder.toUri() ;			
 													
 		return  ResponseEntity.created(createdUri).body(merBsResource);		
 	}
@@ -139,7 +139,7 @@ public class MerBsController {
 		
 		merService.deleteMerBs(optMerBs.get());	
 		
-		MerBsResource merBsResource = new MerBsResource(new MerBsDto(),true);		
+		MerBsResource merBsResource = new MerBsResource();		
 		
 		return ResponseEntity.ok().body(merBsResource);				
 	}

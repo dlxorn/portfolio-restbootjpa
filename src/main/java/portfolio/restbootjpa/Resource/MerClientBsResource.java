@@ -20,7 +20,7 @@ public class MerClientBsResource extends RepresentationModel<MerClientBsResource
 	
 	
 	public MerClientBsResource (MerClientDto merClientDto, boolean isLogin) {	
-		
+		this();
 		this.merClientDto = merClientDto;	
 		this.add(linkTo(MerClientController.class).withRel("merclient-list").withType(RequestMethod.GET.name()));
 		this.add(linkTo(MerClientController.class).slash(merClientDto.getClientNo()).withRel("read-merclient").withType(RequestMethod.GET.name()));		
@@ -32,6 +32,12 @@ public class MerClientBsResource extends RepresentationModel<MerClientBsResource
 		}	
 		
 	}
+	
+	
+	public MerClientBsResource () {	
 		
+		this.add(linkTo(MerClientController.class).withRel("merclient-list").withType(RequestMethod.GET.name()));		
+		
+	}
 	
 }

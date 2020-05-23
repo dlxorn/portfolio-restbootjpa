@@ -31,7 +31,7 @@ MerService merService;
   public void MerClientBsCRUDTest() {	  
 	  
  
-    MerClientDto merClientDto = MerClientDto.builder().clientNm("호랑씨").email("ori@naver.com").PhoneNumber("01034334433").Type(MerClientType.BUISNESS.name()).build();
+    MerClientDto merClientDto = MerClientDto.builder().clientNm("호랑씨").email("ori@naver.com").phoneNumber("01034334433").type(MerClientType.BUISNESS.name()).build();
 	MerClientBs merClientBs = merClientService.saveMerClientFromDto(merClientDto);
 	
 	

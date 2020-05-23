@@ -18,11 +18,11 @@ public class MerClientDto {
 	
 	private Long clientNo;
 	@NotEmpty
-	private String Type;	
+	private String type;	
 	@NotEmpty
 	@Length(max= 100)
 	private String clientNm;
-	private String PhoneNumber;
+	private String phoneNumber;
 	@Email
 	private String email;	
 	

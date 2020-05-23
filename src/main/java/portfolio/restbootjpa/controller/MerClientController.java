@@ -145,9 +145,11 @@ public class MerClientController {
 		
 		MerClientBs merClientBs  = optMerClientBs.get();
 			
-		merClientService.deleteMerBs(merClientBs);				
+		merClientService.deleteMerBs(merClientBs);		
 		
-		return ResponseEntity.ok().build();		
+		MerClientBsResource merClientBsResource = new MerClientBsResource();
+				
+		return ResponseEntity.ok().body(merClientBsResource);		
 	}
 	
 	

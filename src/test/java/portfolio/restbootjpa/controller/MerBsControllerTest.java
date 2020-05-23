@@ -130,15 +130,14 @@ public class MerBsControllerTest extends BaseTest{
 		.andExpect(jsonPath("merNo").exists())  
 		.andExpect(jsonPath("merNo").value(merBs.getMerNo()))
 		.andExpect(jsonPath("phoneNumber").value(phone.getContactCtnt()))
-		.andExpect(jsonPath("email").value(email.getContactCtnt()))
-		.andExpect(jsonPath("_links.self").exists())	
+		.andExpect(jsonPath("email").value(email.getContactCtnt()))	
 		.andExpect(jsonPath("_links.create-merbs").exists())
 		.andExpect(jsonPath("_links.read-merbs").exists())	 
 		.andExpect(jsonPath("_links.update-merbs").exists())	 
 		.andExpect(jsonPath("_links.delete-merbs").exists())	 	
 		.andExpect(jsonPath("_links.merbs-list").exists())	 	
 		.andDo(document("get-merbs",
-				links(    linkWithRel("self").description("link to self"),
+				links(   
 						  linkWithRel("merbs-list").description("가맹점 리스트 조회"),
 						  linkWithRel("read-merbs").description("가맹점 정보 조회"),
 						  linkWithRel("create-merbs").description("가맹점 신규 등록(로그인 이후 링크 제공,사용 가능)"),						
@@ -196,7 +195,6 @@ public class MerBsControllerTest extends BaseTest{
 		.andExpect(jsonPath("merNo").value(merBs.getMerNo()))
 		.andExpect(jsonPath("phoneNumber").value(phone.getContactCtnt()))
 		.andExpect(jsonPath("email").value(email.getContactCtnt()))
-		.andExpect(jsonPath("_links.self").exists())		
 		.andExpect(jsonPath("_links.read-merbs").exists())	 	 	
 		.andExpect(jsonPath("_links.merbs-list").exists())	 	
 		;
@@ -225,8 +223,7 @@ public class MerBsControllerTest extends BaseTest{
 		.andDo(print())
 		.andExpect(status().isCreated())		
 		.andDo(document("create-merbs",
-				links(    linkWithRel("self").description("link to self"),
-						  linkWithRel("merbs-list").description("가맹점 리스트 조회"),
+				links(    linkWithRel("merbs-list").description("가맹점 리스트 조회"),
 						  linkWithRel("read-merbs").description("가맹점 정보 조회"),
 						  linkWithRel("create-merbs").description("가맹점 신규 등록(로그인 이후 링크 제공,사용 가능)"),						
 						  linkWithRel("update-merbs").description("가맹점 정보 수정(로그인 이후 링크 제공,사용 가능)"),							
@@ -359,8 +356,7 @@ public void updateMerBsInfoTest() throws Exception {
 		   .content(objectMapper.writeValueAsString(merBsDto2))	)						
 	.andDo(print()) 
 	.andDo(document("update-merbs",
-			links(    linkWithRel("self").description("link to self"),
-					  linkWithRel("merbs-list").description("가맹점 리스트 조회"),
+			links(    linkWithRel("merbs-list").description("가맹점 리스트 조회"),
 					  linkWithRel("read-merbs").description("가맹점 정보 조회"),
 					  linkWithRel("create-merbs").description("가맹점 신규 등록(로그인 이후 링크 제공,사용 가능)"),						
 					  linkWithRel("update-merbs").description("가맹점 정보 수정(로그인 이후 링크 제공,사용 가능)"),							
@@ -454,12 +450,7 @@ public void updateMerBsInfoTestNoLogin() throws Exception {
 			.andDo(print())
 			.andExpect(status().isOk())		
 			.andDo(document("delete-merbs",
-					links(    linkWithRel("self").description("link to self"),
-							  linkWithRel("merbs-list").description("가맹점 리스트 조회"),
-							  linkWithRel("read-merbs").description("가맹점 정보 조회"),
-							  linkWithRel("create-merbs").description("가맹점 신규 등록(로그인 이후 링크 제공,사용 가능)"),						
-							  linkWithRel("update-merbs").description("가맹점 정보 수정(로그인 이후 링크 제공,사용 가능)"),							
-							  linkWithRel("delete-merbs").description("가맹점 정보 삭제(로그인 이후 링크 제공,사용 가능)")
+					links(    linkWithRel("merbs-list").description("가맹점 리스트 조회")					
 						),				
 				requestHeaders(
 						headerWithName(HttpHeaders.AUTHORIZATION).description("authorization header"),
@@ -512,7 +503,6 @@ public void updateMerBsInfoTestNoLogin() throws Exception {
 					.accept(MediaTypes.HAL_JSON)					)	
 			.andDo(print())
 			.andExpect(status().isOk())		
-			.andExpect(jsonPath("_embedded.merbsinfolist[0]._links.self").exists())
 	    	.andExpect(jsonPath("_embedded.merbsinfolist[0]._links.merbs-list").exists())
 	    	.andExpect(jsonPath("_embedded.merbsinfolist[0]._links.read-merbs").exists())
 	    	.andExpect(jsonPath("_embedded.merbsinfolist[0]._links.create-merbs").exists())
@@ -523,7 +513,7 @@ public void updateMerBsInfoTestNoLogin() throws Exception {
 	    	.andExpect(jsonPath("_links.next").exists())
 	    	.andExpect(jsonPath("_links.last").exists())
 	    	.andDo(document("get-merbslist",
-	    			links(    linkWithRel("self").description("link to self"),
+	    			links(    linkWithRel("self").description("현 페이지 링크"),
 	    					  linkWithRel("first").description("첫 페이지"),
 	    					  linkWithRel("last").description("마지막 페이지"),	
 	    					  linkWithRel("prev").description("이전 페이지"),	
@@ -555,8 +545,7 @@ public void updateMerBsInfoTestNoLogin() throws Exception {
 					.contentType(MediaType.APPLICATION_JSON)			
 					.accept(MediaTypes.HAL_JSON)					)	
 			.andDo(print())
-			.andExpect(status().isOk())			   
-		.andExpect(jsonPath("_embedded.merbsinfolist[0]._links.self").exists())
+			.andExpect(status().isOk())			 
     	.andExpect(jsonPath("_embedded.merbsinfolist[0]._links.merbs-list").exists())
     	.andExpect(jsonPath("_embedded.merbsinfolist[0]._links.read-merbs").exists())
     	.andExpect(jsonPath("_embedded.merbsinfolist[0]._links.create-merbs").doesNotExist())
