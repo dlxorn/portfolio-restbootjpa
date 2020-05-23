@@ -58,8 +58,7 @@ public class MerClientController {
 	
 	@GetMapping
 	public ResponseEntity getList(Pageable pageable,  PagedResourcesAssembler<MerClientBs> assembler ,  @CurrentUser Account currentUser ) {		
-		
-		
+				
 		Page<MerClientBs> page = merClientService.findAll(pageable);
 		
 	    boolean isLogin =	currentUser != null ;	

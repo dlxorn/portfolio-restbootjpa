@@ -3,6 +3,7 @@ package portfolio.restbootjpa.Resource;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 
 import org.springframework.hateoas.RepresentationModel;
+import org.springframework.hateoas.server.core.Relation;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.fasterxml.jackson.annotation.JsonUnwrapped;
@@ -10,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonUnwrapped;
 import portfolio.restbootjpa.controller.MerClientController;
 import portfolio.restbootjpa.dto.MerClientDto;
 
+@Relation(collectionRelation = "clientinfolist")          
 public class MerClientBsResource extends RepresentationModel<MerClientBsResource> {
 	
 	

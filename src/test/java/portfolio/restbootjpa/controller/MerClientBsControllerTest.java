@@ -266,6 +266,37 @@ public void deleteMerBsInfoTest() throws Exception {
 }
 
 
+@Test
+public void getMerBsInfoListTestLogin() throws Exception {
+	
+	makeMerClientData();
+	
+    mockMvc.perform(
+				get("/api/merclient/")				
+				.param("page","0")
+				.param("size", "5")
+				.param("sort","clientNo,DESC")
+				.header(HttpHeaders.AUTHORIZATION,  getBearerToken(true))
+				.contentType(MediaType.APPLICATION_JSON)			
+				.accept(MediaTypes.HAL_JSON)					)	
+		.andDo(print())
+		.andExpect(status().isOk())			   
+	.andExpect(jsonPath("_embedded.clientinfolist[0]._links.merclient-list").exists())
+	.andExpect(jsonPath("_embedded.clientinfolist[0]._links.read-merclient").exists())
+	.andExpect(jsonPath("_embedded.clientinfolist[0]._links.create-merclient").exists())
+	.andExpect(jsonPath("_embedded.clientinfolist[0]._links.update-merclient").exists())
+	.andExpect(jsonPath("_embedded.clientinfolist[0]._links.delete-merclient").exists())	    	
+	.andExpect(jsonPath("_links.first").exists())
+	.andExpect(jsonPath("_links.self").exists())
+	.andExpect(jsonPath("_links.next").exists())
+	.andExpect(jsonPath("_links.last").exists())
+	
+	;
+}
+
+
+
+
 
 @Test
 public void getMerBsInfoListTestNoLogin() throws Exception {
@@ -281,11 +312,11 @@ public void getMerBsInfoListTestNoLogin() throws Exception {
 				.accept(MediaTypes.HAL_JSON)					)	
 		.andDo(print())
 		.andExpect(status().isOk())			   
-	.andExpect(jsonPath("_embedded.merbsinfolist[0]._links.merclient-list").exists())
-	.andExpect(jsonPath("_embedded.merbsinfolist[0]._links.read-merclient").exists())
-	.andExpect(jsonPath("_embedded.merbsinfolist[0]._links.create-merclient").doesNotExist())
-	.andExpect(jsonPath("_embedded.merbsinfolist[0]._links.update-merclient").doesNotExist())
-	.andExpect(jsonPath("_embedded.merbsinfolist[0]._links.delete-merclient").doesNotExist())	    	
+	.andExpect(jsonPath("_embedded.clientinfolist[0]._links.merclient-list").exists())
+	.andExpect(jsonPath("_embedded.clientinfolist[0]._links.read-merclient").exists())
+	.andExpect(jsonPath("_embedded.clientinfolist[0]._links.create-merclient").doesNotExist())
+	.andExpect(jsonPath("_embedded.clientinfolist[0]._links.update-merclient").doesNotExist())
+	.andExpect(jsonPath("_embedded.clientinfolist[0]._links.delete-merclient").doesNotExist())	    	
 	.andExpect(jsonPath("_links.first").exists())
 	.andExpect(jsonPath("_links.self").exists())
 	.andExpect(jsonPath("_links.next").exists())
