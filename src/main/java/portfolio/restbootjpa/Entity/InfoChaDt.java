@@ -1,43 +1,46 @@
 package portfolio.restbootjpa.entity;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import portfolio.restbootjpa.constraint.ReRegType;
 
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Builder
-public class ReRegBase  extends BaseEntity{
+public class InfoChaDt  extends BaseEntity{
 
 	@Id
 	@GeneratedValue
 	private Long id;
 	
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name="mer_no")
-	private MerBs merbs;
-		
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name="mer_client_bs")
-	private MerClientBs merClientBs;	
+
+	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumn(name= "info_chng_base_id")
+	private InfoChaBase reportBase;
+	
+	private String beforeCtnt;
+	private String afterCtnt;
 		
 	
-	@OneToMany(mappedBy = "reportBase")
-	private List<ReRegDt> reportDtList = new ArrayList<ReRegDt>();
-				
+	@Enumerated(EnumType.STRING)
+	private ReRegType reRegType;
+	
+	
+		
+	
+	
 	
 }

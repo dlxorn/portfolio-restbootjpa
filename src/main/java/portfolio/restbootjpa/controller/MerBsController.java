@@ -95,6 +95,7 @@ public class MerBsController {
 		
 								
 		MerBs merBs = merService.saveFromMerBsDto(merBsDto);	
+		merBsDto.setMerNo(merBs.getMerNo());
 			
 		
 		MerBsResource merBsResource = new MerBsResource(merBsDto, true);

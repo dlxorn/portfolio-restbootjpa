@@ -24,8 +24,8 @@ import portfolio.restbootjpa.entity.MerBs;
 import portfolio.restbootjpa.entity.MerClientBs;
 import portfolio.restbootjpa.entity.MerReprRel;
 import portfolio.restbootjpa.entity.Phone;
-import portfolio.restbootjpa.entity.ReRegBase;
-import portfolio.restbootjpa.entity.ReRegDt;
+import portfolio.restbootjpa.entity.InfoChaBase;
+import portfolio.restbootjpa.entity.InfoChaDt;
 
 
 @SpringBootTest
@@ -244,7 +244,7 @@ public class RepositoryTest {
 	public void ReRegCRUDTest() {
 								
 		
-		ReRegBase reRegBase = ReRegBase.builder().build();
+		InfoChaBase reRegBase = InfoChaBase.builder().build();
 	
 				
 		reRegBaseRepository.save(reRegBase);		
@@ -252,11 +252,11 @@ public class RepositoryTest {
 		em.flush();				
 		em.clear();	
 		
-		Optional<ReRegBase> optreRegBase2 = reRegBaseRepository.findById(reRegBase.getId());	
+		Optional<InfoChaBase> optreRegBase2 = reRegBaseRepository.findById(reRegBase.getId());	
 				
 		assertThat(optreRegBase2.isEmpty() == false).isEqualTo(true);
 		
-		ReRegBase reRegBase2 = optreRegBase2.get();
+		InfoChaBase reRegBase2 = optreRegBase2.get();
 		
 		assertThat(reRegBase2.getId()).isEqualTo(reRegBase.getId());
 	
@@ -265,7 +265,7 @@ public class RepositoryTest {
 		
 		em.flush();		
 				
-		Optional<ReRegBase> optreRegBase3 = reRegBaseRepository.findById(reRegBase.getId());			 
+		Optional<InfoChaBase> optreRegBase3 = reRegBaseRepository.findById(reRegBase.getId());			 
 		assertThat(optreRegBase3.isEmpty()).isEqualTo(true);
 		
 		
@@ -278,7 +278,7 @@ public class RepositoryTest {
 	public void ReRegGetDtListTest() {
 								
 		
-		ReRegBase reRegBase = ReRegBase.builder().build();
+		InfoChaBase reRegBase = InfoChaBase.builder().build();
 	
 				
 		reRegBaseRepository.save(reRegBase);		
@@ -286,18 +286,18 @@ public class RepositoryTest {
 		em.flush();				
 		em.clear();	
 		
-		Optional<ReRegBase> optreRegBase2 = reRegBaseRepository.findById(reRegBase.getId());	
+		Optional<InfoChaBase> optreRegBase2 = reRegBaseRepository.findById(reRegBase.getId());	
 				
 		assertThat(optreRegBase2.isEmpty() == false).isEqualTo(true);		
-		ReRegBase reRegBase2 = optreRegBase2.get();		
+		InfoChaBase reRegBase2 = optreRegBase2.get();		
 		assertThat(reRegBase2.getId()).isEqualTo(reRegBase.getId());	
 
 		
-		ReRegDt reRegDt = ReRegDt.builder().beforeCtnt("이전").afterCtnt("이후").reportBase(reRegBase).build();		
+		InfoChaDt reRegDt = InfoChaDt.builder().beforeCtnt("이전").afterCtnt("이후").reportBase(reRegBase).build();		
 		reRegDtRepository.save(reRegDt);
 		
 		
-		ReRegDt reRegDt2 = ReRegDt.builder().beforeCtnt("이전1").afterCtnt("이후1").reportBase(reRegBase).build();		
+		InfoChaDt reRegDt2 = InfoChaDt.builder().beforeCtnt("이전1").afterCtnt("이후1").reportBase(reRegBase).build();		
 		reRegDtRepository.save(reRegDt2);
 		
 
@@ -305,9 +305,9 @@ public class RepositoryTest {
 		em.clear();	
 		
 		
-		Optional<ReRegBase> optreRegBase3 = reRegBaseRepository.findById(reRegBase.getId());	
+		Optional<InfoChaBase> optreRegBase3 = reRegBaseRepository.findById(reRegBase.getId());	
 		assertThat(optreRegBase3.isEmpty() == false).isEqualTo(true);	
-		ReRegBase ReRegBase3 = optreRegBase3.get();		
+		InfoChaBase ReRegBase3 = optreRegBase3.get();		
 		System.out.println("====================== lazy 여부 확인 선 ");
 		
 		
@@ -490,9 +490,37 @@ public class RepositoryTest {
 		em.clear();
 	}
 	
+		
+	
+	@Test
+	public void MerClientListByMerNoTest() {
+		
+    MerBs merBs = 	MerBs.builder().merNm("하하네 가맹점").build();    
+	merBsRepository.save(merBs);	   
+	em.flush();	
+	em.clear();			
+		
+	for(int i=0 ; i<10; i++) {			
+			
+			MerClientBs merClientBs = MerClientBs.builder().clientNm("하하"+ i)								
+                    .build();		
+			merClientBsRepository.save(merClientBs);	
+			MerReprRel merReprRel = MerReprRel.builder().merBs(merBs).merClientBs(merClientBs).build();			
+			merClientRelRepository.save(merReprRel);						
+    }
+	
+	em.flush();	
+	em.clear();	
+	
+	List<MerClientBs> merClientBsList = merClientBsRepository.findMerClientBsByMerNo(merBs.getMerNo());
+	
+		
+	for(int i = 0 ; i < merClientBsList.size(); i++) {
+		MerClientBs merClientBs = merClientBsList.get(i);
+        assertThat(merClientBs.getClientNm()).isEqualTo("하하"+ i) ;    
+	}	
+				
+	}
 	
 	
-	
-	
-
 }

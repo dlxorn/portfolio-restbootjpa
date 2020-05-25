@@ -236,7 +236,7 @@ public class MerBsControllerTest extends BaseTest{
 			),
 			relaxedRequestFields(			
 					fieldWithPath("merNm").description("가맹점명"),
-					fieldWithPath("regDtm").description("등록 일자 (YYYYMMDDHHMMSS"),
+					fieldWithPath("regDtm").description("등록 일자 (YYYYMMDDHHMMSS)"),
 					fieldWithPath("bbrNo").description("관리영업점번호(6자리 숫자)"),
 					fieldWithPath("phoneNumber").description("폰번호"),
 					fieldWithPath("email").description("이메일 주소")															

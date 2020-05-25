@@ -126,6 +126,7 @@ public class MerClientController {
 		
 		WebMvcLinkBuilder selfLinkBuilder = linkTo(MerClientController.class).slash(merClientBs.getClientNo());
 		URI createdUri  = selfLinkBuilder.toUri() ;		
+		merClientDto.setClientNo(merClientBs.getClientNo());
 		
 		MerClientBsResource merClientBsResource = new MerClientBsResource(merClientDto, true);
 		
@@ -170,14 +171,6 @@ public class MerClientController {
 	   
        return merBsDto;
    	}
-   
-    
-   
-   
-   
-	
-	
-	
-	
+   	
 
 }

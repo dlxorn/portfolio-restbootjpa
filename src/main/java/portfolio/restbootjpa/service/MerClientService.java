@@ -1,5 +1,6 @@
 package portfolio.restbootjpa.service;
 
+import java.util.List;
 import java.util.Optional;
 
 import javax.transaction.Transactional;
@@ -121,6 +122,16 @@ public class MerClientService {
 		
 	  merClientBsRepository.delete(merClientBs);
 			   
-	}
+   }
+     
+   
+   public List<MerClientDto> getMerClientListByMerNo(Long merNo) {   
+		
+	   
+	   return null;
+			   
+   }
+   
+   
 	
 }
