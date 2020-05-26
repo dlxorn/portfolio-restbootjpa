@@ -125,7 +125,7 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
-			<plugin>
+			<!-- <plugin>
 				<groupId>org.asciidoctor</groupId>
 				<artifactId>asciidoctor-maven-plugin</artifactId>
 				<version>1.5.3</version>
@@ -134,7 +134,7 @@
 						<id>generate-docs</id>
 						<phase>prepare-package</phase>
 						<goals>
-							<goal>process-asciidoc</goal>      <!-- asciidocs 문서를 실행하라?? -->
+							<goal>process-asciidoc</goal>      asciidocs 문서를 실행하라??
 						</goals>
 						<configuration>
 							<backend>html</backend>
@@ -155,15 +155,15 @@
 				<version>2.7</version>
 				<executions>
 					<execution>
-						<id>copy-resources</id>   <!-- resousrce를 복사해주는 플러그인 기능 -->
+						<id>copy-resources</id>   resousrce를 복사해주는 플러그인 기능
 						<phase>prepare-package</phase>
 						<goals>
 							<goal>copy-resources</goal>
 						</goals>
 						<configuration>
 							<outputDirectory>
-								${project.build.outputDirectory}/static/docs   <!-- 아래 generated-docs 
-									안에 있는 파일을 여기다 복사 -->
+								${project.build.outputDirectory}/static/docs   아래 generated-docs 
+									안에 있는 파일을 여기다 복사
 							</outputDirectory>
 							<resources>
 								<resource>
@@ -175,7 +175,7 @@
 						</configuration>
 					</execution>
 				</executions>
-			</plugin>
+			</plugin> -->
 		</plugins>
 	</build>
 </project>
