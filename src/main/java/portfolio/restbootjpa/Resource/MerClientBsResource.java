@@ -1,4 +1,4 @@
-package portfolio.restbootjpa.Resource;
+package portfolio.restbootjpa.resource;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 

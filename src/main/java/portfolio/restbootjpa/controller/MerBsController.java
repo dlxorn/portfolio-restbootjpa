@@ -27,11 +27,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import portfolio.restbootjpa.Resource.MerBsResource;
 import portfolio.restbootjpa.accounts.Account;
 import portfolio.restbootjpa.accounts.CurrentUser;
 import portfolio.restbootjpa.dto.MerBsDto;
 import portfolio.restbootjpa.entity.MerBs;
+import portfolio.restbootjpa.resource.MerBsResource;
 import portfolio.restbootjpa.service.MerService;
 import portfolio.restbootjpa.validator.MerBsValidator;
 
