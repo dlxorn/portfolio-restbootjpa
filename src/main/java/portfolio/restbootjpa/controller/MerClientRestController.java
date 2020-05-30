@@ -41,7 +41,7 @@ import portfolio.restbootjpa.validator.MerClientBsValidator;
 
 @RestController
 @RequestMapping(value="/api/merclient",produces = MediaTypes.HAL_JSON_VALUE)
-public class MerClientController {
+public class MerClientRestController {
 	
 	
 	@Autowired
@@ -124,7 +124,7 @@ public class MerClientController {
 		MerClientBs merClientBs = merClientService.saveMerClientFromDto(merClientDto);
 		
 		
-		WebMvcLinkBuilder selfLinkBuilder = linkTo(MerClientController.class).slash(merClientBs.getClientNo());
+		WebMvcLinkBuilder selfLinkBuilder = linkTo(MerClientRestController.class).slash(merClientBs.getClientNo());
 		URI createdUri  = selfLinkBuilder.toUri() ;		
 		merClientDto.setClientNo(merClientBs.getClientNo());
 		

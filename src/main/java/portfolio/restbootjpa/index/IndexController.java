@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import portfolio.restbootjpa.controller.MerBsController;
+import portfolio.restbootjpa.controller.MerBsRestController;
 
 @RestController
 @RequestMapping(value = "/", produces = MediaTypes.HAL_JSON_VALUE)
@@ -19,7 +19,7 @@ class IndexController {
 	public RepresentationModel getMerBsInfoList() {	    
 		
 		RepresentationModel index = new RepresentationModel();
-		index.add(linkTo(MerBsController.class).withRel("merbs"));
+		index.add(linkTo(MerBsRestController.class).withRel("merbs"));
 				
 		
 		return index;

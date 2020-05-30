@@ -60,7 +60,7 @@ import portfolio.restbootjpa.repository.ReRegBaseRepository;
 import portfolio.restbootjpa.repository.ReRegDtRepository;
 
 
-public class MerBsControllerTest extends BaseTest{
+public class MerBsRestControllerTest extends BaseTest{
 		
 	@Autowired
 	protected MockMvc mockMvc;  

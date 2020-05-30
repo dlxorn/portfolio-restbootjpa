@@ -37,7 +37,7 @@ import portfolio.restbootjpa.validator.MerBsValidator;
 
 @RestController
 @RequestMapping(value = "/api/merbs", produces = MediaTypes.HAL_JSON_VALUE)
-public class MerBsController {
+public class MerBsRestController {
 
 	@Autowired
 	MerService merService;	
@@ -99,7 +99,7 @@ public class MerBsController {
 			
 		
 		MerBsResource merBsResource = new MerBsResource(merBsDto, true);
-		WebMvcLinkBuilder selfLinkBuilder = linkTo(MerBsController.class).slash(merBs.getMerNo());
+		WebMvcLinkBuilder selfLinkBuilder = linkTo(MerBsRestController.class).slash(merBs.getMerNo());
 		URI createdUri  = selfLinkBuilder.toUri() ;			
 													
 		return  ResponseEntity.created(createdUri).body(merBsResource);		
