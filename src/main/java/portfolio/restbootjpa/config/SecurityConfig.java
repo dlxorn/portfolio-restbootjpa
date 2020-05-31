@@ -11,8 +11,6 @@ import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.oauth2.provider.token.TokenStore;
-import org.springframework.security.oauth2.provider.token.store.InMemoryTokenStore;
 
 import portfolio.restbootjpa.accounts.AccountService;
 import portfolio.restbootjpa.accounts.CustomOAuth2UserService;
@@ -30,14 +28,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 	@Autowired
 	CustomOAuth2UserService customOAuth2UserService;
 	
-	
-	
-	@Bean
-	public TokenStore tokenStore() {
-		return new InMemoryTokenStore();		
-	}
 		
-	
 	
 	protected void configure(HttpSecurity http) throws Exception {	
 		http
