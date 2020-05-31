@@ -47,8 +47,7 @@ public class BaseTest {
 	protected String getBearerToken(boolean needToCreateAccount) throws Exception {
 		return "Bearer " + getAccessToken(needToCreateAccount) ;
 	}
-	
-	
+		
 
 	protected String getAccessToken(boolean needToCreateAccount) throws Exception {
 //임시 주석    	

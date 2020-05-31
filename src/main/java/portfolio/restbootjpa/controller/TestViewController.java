@@ -9,11 +9,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class TestViewController {
 		
 	@GetMapping
-	public String index() {		
-				
-	  return "index";
-		
+	public String index() {					
+	  return "index";		
 	}
+	
+	
+	
 	
 	
 	
