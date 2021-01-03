@@ -14,10 +14,7 @@
 	<name>restbootjpa</name>
 	<description>portfolio project for Spring Boot</description>
 
-	<properties>
-    <maven.compiler.source>1.8</maven.compiler.source>
-    <maven.compiler.target>1.8</maven.compiler.target>
-  </properties>
+
   
 	<dependencies>
 		<dependency>
@@ -74,8 +71,16 @@
 			<artifactId>spring-security-test</artifactId>			
 			<scope>test</scope>
 		</dependency>
-		
-		
+
+		<!-- https://mvnrepository.com/artifact/com.h2database/h2 -->
+		<dependency>
+			<groupId>com.h2database</groupId>
+			<artifactId>h2</artifactId>
+			<version>1.4.200</version>
+		</dependency>
+
+
+
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-configuration-processor</artifactId>
@@ -83,11 +88,11 @@
 		</dependency>
  
  <!-- https://mvnrepository.com/artifact/org.mariadb.jdbc/mariadb-java-client -->
-<dependency>
-    <groupId>org.mariadb.jdbc</groupId>
-    <artifactId>mariadb-java-client</artifactId>
-    <version>2.6.0</version>
-</dependency>
+<!--<dependency>-->
+<!--    <groupId>org.mariadb.jdbc</groupId>-->
+<!--    <artifactId>mariadb-java-client</artifactId>-->
+<!--    <version>2.6.0</version>-->
+<!--</dependency>-->
  
 			
 	 <!-- 
@@ -138,8 +143,8 @@
     <groupId>org.apache.maven.plugins</groupId>
     <artifactId>maven-compiler-plugin</artifactId>
     <configuration>
-         <source>1.8</source>
-        <target>1.8</target>
+         <source>1.11</source>
+        <target>1.11</target>
         <verbose>true</verbose>
     </configuration>
 </plugin>
